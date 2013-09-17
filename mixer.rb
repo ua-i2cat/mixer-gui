@@ -144,7 +144,7 @@ class Mixer
     s.print(request.to_json)
     response = JSON.parse(s.recv(1024)) # TODO: max_len ?
     s.close
-    return false if response[:error].nil?
+    return false unless response[:error].nil?
     return true # TODO return actual data
   end
 
