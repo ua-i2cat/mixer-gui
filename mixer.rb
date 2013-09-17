@@ -5,12 +5,10 @@ class Mixer
 
   attr_reader :host, :port
 
-  def initialize(host, port, testing = false)
+  def initialize(host, port, testing = nil)
     @host = host
     @port = port
     @testing = testing
-    @s = TCPSocket.open(host, port) unless @testing
-
   end
 
   def start(options = {})
@@ -98,31 +96,29 @@ class Mixer
       send_action("exit_mixer")
     else
       send_action("exit_mixer")
-      @s.close
     end
   end
 
   def get_streams
-    send_action("get_streams")
-    # TODO
+    get_response("get_streams")
   end
 
   def get_stream(id)
     params = {
       :id => id
     }
-    send_action("get_stream", params)
+    get_response("get_stream", params)
   end
 
   def get_destinations
-    send_action("get_destinations")
+    get_response("get_destinations")
   end
 
   def get_destination(id)
     params = {
       :id => id
     }
-    send_action("get_destination", params)
+    get_response("get_destination", params)
   end
 
   private
@@ -130,9 +126,26 @@ class Mixer
     request = {
       :action => action,
       :params => params
-    }.to_json
-    return request if @testing
-    s.print(request)
+    }
+    return request if @testing == :request
+    s = TCPSocket.open(host, port)
+    s.print(request.to_json)
+    s.close
+  end
+
+  private
+  def get_response(action, params = nil)
+    request = {
+      :action => action,
+      :params => params
+    }
+    return request if @testing == :request
+    s = TCPSocket.open(host, port)
+    s.print(request.to_json)
+    response = JSON.parse(s.recv(1024)) # TODO: max_len ?
+    s.close
+    return false if response[:error].nil?
+    return true # TODO return actual data
   end
 
 end
