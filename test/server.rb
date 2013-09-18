@@ -6,6 +6,7 @@ class MockServer
   def initialize(host, port)
     @host = host
     @port = port
+    @run = true
   end
 
   def respond(conn, error, data)
@@ -18,38 +19,19 @@ class MockServer
 
   def start
     @thread = Thread.new do |t|
-      a = TCPServer.new(host, port) # '' means to bind to "all interfaces", same as nil or '0.0.0.0'
-      loop {
-        connection = a.accept
-        request = JSON.parse(connection.recv(1024))
-        puts request
-=begin        
-        case request['action']
-        when 'get_streams'
-          respond(connection, nil, [
-            {
-              :id => 0,
-              :width => 0,
-              :height => 0
-            },
-            {
-              :id => 1,
-              :width => 1,
-              :height => 1
-            }
-            ])
-        else
-          respond(connection, false, nil)
-        end
-=end
-        connection.print({ :error => nil }.to_json)
-        connection.close
-      }
+      a = TCPServer.new(@host, @port) # '' means to bind to "all interfaces", same as nil or '0.0.0.0'
+      while @run
+        client = a.accept
+        request = JSON.parse(client.recv(1024))
+        client.print({ :error => nil }.to_json)
+        client.close
+      end
+      Thread.exit(@thread)
     end
   end
 
   def stop
-    Thread.kill(@thread)
+    @run = false
   end
 
 end

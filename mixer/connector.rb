@@ -142,12 +142,10 @@ module Mixer
       return request if @testing == :request
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      puts '=a'
       response = JSON.parse(s.recv(1024)) # TODO: max_len ?
-      puts '=b'
       s.close
-      return false if response["error"]
-      return true # TODO return actual data
+      return false if response['error']
+      return true
     end
 
   end

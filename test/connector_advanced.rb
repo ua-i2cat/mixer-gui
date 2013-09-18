@@ -7,9 +7,9 @@ require './server'
 class TestConnectorAdvanced < Test::Unit::TestCase
 
   def setup
-    @server = MockServer.new("127.0.0.1", 2224)
+    @server = MockServer.new('', 5555)
     @server.start
-    @connector = Mixer::Connector.new('localhost', 2224)
+    @connector = Mixer::Connector.new('localhost', 5555)
   end
 
   def teardown
@@ -22,7 +22,7 @@ class TestConnectorAdvanced < Test::Unit::TestCase
 
   def test_get_streams
     response = @connector.get_streams
-    assert_false(response['error'])
+    assert_equal(true, response)
   end
 
 end
