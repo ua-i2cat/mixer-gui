@@ -2,7 +2,7 @@ require 'socket'
 require 'json'
 
 
-module Mixer
+module RMixer
 
   class Connector
 
@@ -12,6 +12,7 @@ module Mixer
       @host = host
       @port = port
       @testing = testing
+      @s = TCPSocket.open(@host, @port) unless testing
     end
 
     def start(options = {})
@@ -21,7 +22,7 @@ module Mixer
         :max_streams => options[:max_streams] || 8,
         :input_port => options[:input_port] || 5004
       }
-      send_action("start_mixer", params)
+      get_response("start_mixer", params)
     end
 
     def add_stream(width, height)
@@ -29,41 +30,41 @@ module Mixer
         :width => width,
         :height => height
       }
-      send_action("add_stream", params)
+      get_response("add_stream", params)
     end
 
     def remove_stream(id)
       params = {
         :id => id
       }
-      send_action("remove_stream", params)
+      get_response("remove_stream", params)
     end
 
-    def modify_stream(id, options = {})
+    def modify_stream(id, width, height, options = {})
       params = {
-        :id => options[:id],
-        :width => options[:width],
-        :height => options[:height],
-        :x => options[:x],
-        :y => options[:y],
-        :layer => options[:layer],
-        :keep_aspect_ratio => options[:keep_aspect_ratio]
+        :id => id,
+        :width => width,
+        :height => height,
+        :x => options[:x] || 0,
+        :y => options[:y] || 0,
+        :layer => options[:layer] || 0,
+        :keep_aspect_ratio => options[:keep_aspect_ratio] || false
       }
-      send_action("modify_stream", params)
+      get_response("modify_stream", params)
     end
 
     def disable_stream(id)
       params = {
         :id => id
       }
-      send_action("disable_stream", params)
+      get_response("disable_stream", params)
     end
 
     def enable_stream(id)
       params = {
         :id => id
       }
-      send_action("enable_stream", params)
+      get_response("enable_stream", params)
     end
 
     def modify_layout(width, height, resize_streams = true)
@@ -72,7 +73,7 @@ module Mixer
         :height => height,
         :resize_streams => resize_streams
       }
-      send_action("modify_layout", params)
+      get_response("modify_layout", params)
     end
 
     def add_destination(ip, port)
@@ -80,23 +81,24 @@ module Mixer
         :ip => ip,
         :port => port
       }
-      send_action("add_destination", params)
+      get_response("add_destination", params)
     end
 
     def remove_destination(id)
       params = {
         :id => id
       }
-      send_action("remove_destination", params)
+      get_response("remove_destination", params)
     end
 
     def stop
-      send_action("stop_mixer")
+      get_response("stop_mixer")
     end
 
     def exit
-      return send_action("exit_mixer") if @testing
-      send_action("exit_mixer")
+      result = get_response("exit_mixer")
+      @s.close unless @testing
+      return result
     end
 
     def get_streams
@@ -122,30 +124,15 @@ module Mixer
     end
 
     private
-    def send_action(action, params = nil)
-      request = {
-        :action => action,
-        :params => params
-      }
-      return request if @testing == :request
-      s = TCPSocket.open(@host, @port)
-      s.print(request.to_json)
-      s.close
-    end
-
-    private
     def get_response(action, params = nil)
       request = {
         :action => action,
         :params => params
       }
       return request if @testing == :request
-      s = TCPSocket.open(@host, @port)
-      s.print(request.to_json)
-      response = JSON.parse(s.recv(1024)) # TODO: max_len ?
-      s.close
-      return false if response['error']
-      return true
+      @s.print(request.to_json)
+      response = JSON.parse(@s.recv(1024), :symbolize_names => true) # TODO: max_len ?
+      return response
     end
 
   end

@@ -1,15 +1,16 @@
 require 'test/unit'
 require 'json'
-require '../mixer/connector'
+require_relative '../rmixer/connector'
 require './server'
 
 
 class TestConnectorAdvanced < Test::Unit::TestCase
 
   def setup
-    @server = MockServer.new('', 5555)
+    @server = MockServer.new 'localhost', 8888
     @server.start
-    @connector = Mixer::Connector.new('localhost', 5555)
+    sleep 1
+    @connector = RMixer::Connector.new 'localhost', 8888
   end
 
   def teardown

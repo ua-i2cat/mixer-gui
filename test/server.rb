@@ -1,5 +1,6 @@
 require 'socket'
 require 'json'
+require 'timeout'
 
 class MockServer
 
@@ -21,17 +22,22 @@ class MockServer
     @thread = Thread.new do |t|
       a = TCPServer.new(@host, @port) # '' means to bind to "all interfaces", same as nil or '0.0.0.0'
       while @run
-        client = a.accept
-        request = JSON.parse(client.recv(1024))
-        client.print({ :error => nil }.to_json)
-        client.close
+        begin
+          Timeout.timeout 1 do
+            client = a.accept
+            request = JSON.parse(client.recv(1024))
+            client.print({ :error => nil }.to_json)
+            client.close
+          end
+        rescue Timeout::Error => e
+        end
       end
-      Thread.exit(@thread)
     end
   end
 
   def stop
     @run = false
+    @thread.join
   end
 
 end

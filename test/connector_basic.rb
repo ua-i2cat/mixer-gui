@@ -1,11 +1,11 @@
 require 'test/unit'
 require 'json'
-require '../mixer/connector'
+require_relative '../rmixer/connector'
 
 class TestConnectorBasic < Test::Unit::TestCase
 
   def setup
-    @connector = Mixer::Connector.new(
+    @connector = RMixer::Connector.new(
       'localhost', 2222, testing = :request
       )
   end
@@ -39,10 +39,7 @@ class TestConnectorBasic < Test::Unit::TestCase
 
   def test_modify_stream_request
     id = Random.rand(8)
-    request = @connector.modify_stream(0, options = {
-      :id => id,
-      :width => 400,
-      :height => 400,
+    request = @connector.modify_stream(id, 400, 400, options = {
       :x => 10,
       :y => 10,
       :layer => 1,
