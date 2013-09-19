@@ -1,4 +1,6 @@
-require_relative 'connector'
+require "rmixer/version"
+require "connector"
+
 
 module RMixer
 
@@ -7,9 +9,8 @@ module RMixer
 
   class Mixer
 
-    def initialize(host, port, options = {})
+    def initialize(host, port)
       @conn = RMixer::Connector.new(host, port)
-      @conn.start(options)
     end
 
     def streams
@@ -32,7 +33,7 @@ module RMixer
       if @conn.respond_to?(name)
         response = @conn.send(name, *args, &block)
         raise MixerError, response[:error] if response[:error]
-        return nil if response.include?(:error) and response.size == 1
+        return nil if response.include?(:error) && response.size == 1
         return response
       end
     end
