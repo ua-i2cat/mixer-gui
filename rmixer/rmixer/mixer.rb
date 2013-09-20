@@ -1,5 +1,6 @@
 require_relative 'connector'
 
+
 module RMixer
 
   class MixerError < StandardError
@@ -7,9 +8,23 @@ module RMixer
 
   class Mixer
 
-    def initialize(host, port, options = {})
+    def initialize(host, port)
       @conn = RMixer::Connector.new(host, port)
-      @conn.start(options)
+    end
+
+    def start(options = {})
+      legal_options = [:layout, :max_streams, :input_port]
+      options.each do |o|
+        raise MixerError unless legal_options.include?(o)
+      end
+      width, height = options[:size].split('x')
+      response = @conn.start({
+        :width => width,
+        :height => height,
+        :max_streams => options[:max_streams],
+        :input_port => options[:input_port]
+        })
+      raise MixerError if response[:error]
     end
 
     def streams

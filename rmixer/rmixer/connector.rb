@@ -12,7 +12,6 @@ module RMixer
       @host = host
       @port = port
       @testing = testing
-      @s = TCPSocket.open(@host, @port) unless testing
     end
 
     def start(options = {})
@@ -97,7 +96,6 @@ module RMixer
 
     def exit
       result = get_response("exit_mixer")
-      @s.close unless @testing
       return result
     end
 
@@ -130,9 +128,11 @@ module RMixer
         :params => params
       }
       return request if @testing == :request
-      @s.print(request.to_json)
-      response = JSON.parse(@s.recv(1024), :symbolize_names => true) # TODO: max_len ?
-      return response
+      s = TCPSocket.open(@host, @port)
+      s.print(request.to_json)
+      response = s.recv(1024) # TODO: max_len ?
+      s.close
+      return JSON.parse(response, :symbolize_names => true)
     end
 
   end
