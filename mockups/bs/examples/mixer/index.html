@@ -91,8 +91,8 @@
                   </tbody>
                 </table>
                 <div>
-                  <button type="submit" class="btn btn-danger">Remove stream</button>
-                  <button type="submit" class="btn pull-right btn-warning">Disable stream</button>
+                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                  <button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
                 </div>
               </div>
             </div>
@@ -124,8 +124,8 @@
                   </tbody>
                 </table>
                 <div>
-                  <button type="submit" class="btn btn-danger">Remove stream</button>
-                  <button type="submit" class="btn pull-right btn-success">Enable stream</button>
+                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                  <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
                 </div>
               </div>
             </div>
@@ -136,24 +136,27 @@
                 <h3 class="panel-title">Stream 3</h3>
               </div>
               <div class="panel-body">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label" for="width">Original Width</label>
-                    <div class="controls">
-                      <input type="text" class="form-control" id="width" placeholder="Width">
+
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="width" class="col-lg-4 control-label">Original Width</label>
+                    <div class="col-lg-8">
+                      <input type="number" class="form-control" id="width" placeholder="Width">
                     </div>
                   </div>
-                  <div class="control-group">
-                    <label class="control-label" for="height">Original Height</label>
-                    <div class="controls">
-                      <input type="text" class="form-control" id="height" placeholder="Height">
+                  <div class="form-group">
+                    <label for="height" class="col-lg-4 control-label">Original Height</label>
+                    <div class="col-lg-8">
+                      <input type="number" class="form-control" id="height" placeholder="Height">
                     </div>
                   </div>
-                  <div>
-                    <br>
-                    <button type="submit" class="btn">Add stream</button>
+                  <div class="form-group">
+                    <div class="col-lg-offset-0 col-lg-8">
+                      <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
@@ -163,13 +166,53 @@
         <div class="page-header">
           <h1>Destinations</h1>
         </div>
-        <select multiple="multiple">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
+
+            <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Current Destinations</div>
+
+            <div class="panel-body">
+              <!-- Table -->
+              <table class="table table-hover">
+                <tr>
+                  <th>ID</th>
+                  <th>IP</th>
+                  <th>Port</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>192.168.10.134</td>
+                  <td>5004</td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-xs">Remove</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>192.168.10.217</td>
+                  <td>5004</td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-xs">Remove</button>
+                  </td>
+                </tr>
+              </table>
+
+              <form class="form-inline" role="form">
+                <div class="form-group col-lg-6">
+                  <label class="sr-only" for="ip">IP</label>
+                  <input type="text" class="form-control input-sm" id="ip" placeholder="IP">
+                </div>
+                <div class="form-group col-lg-3">
+                  <label class="sr-only" for="port">Port</label>
+                  <input type="number" class="form-control input-sm" id="port" placeholder="Port">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Add</button>
+              </form>
+            </div>
+
+          </div>
+
       </div>
     </div> <!-- /container -->
 
