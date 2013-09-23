@@ -79,11 +79,12 @@ post '/streams/:id/modify' do
   width = params[:width].to_i
   height = params[:height].to_i
 
+  keep_text = params[:keep_aspect_ratio].downcase
+  
   options = {
     :x => params[:x].to_i,
     :y => params[:y].to_i,
     :layer => params[:layer].to_i,
-    :keep_text => params[:keep_aspect_ratio].downcase,
     :keep_aspect_ratio => (keep_text == "true" || keep_text == "1")
   }
 
