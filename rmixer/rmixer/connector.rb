@@ -24,10 +24,15 @@ module RMixer
       get_response("start_mixer", params)
     end
 
-    def add_stream(width, height)
+    def add_stream(width, height, options = {})
       params = {
         :width => width,
-        :height => height
+        :height => height,
+        :new_w => options[:new_w],
+        :new_h => options[:new_h],
+        :x => options[:x],
+        :y => options[:y],
+        :layer => options[:layer]
       }
       get_response("add_stream", params)
     end

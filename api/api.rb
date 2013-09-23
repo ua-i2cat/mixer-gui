@@ -17,7 +17,9 @@ post '/start' do
   content_type :json
 
   if params.include?(:size)
-    width, height = options[:size].split('x').to_i
+    width, height = options[:size].downcase.split('x')
+    width = width.to_i
+    height = height.to_i
   end
 
   options = {
@@ -34,8 +36,18 @@ end
 
 post '/streams/add' do
   content_type :json
+  width, height = params[:size].downcase.split('x')
+  width = width.to_i
+  height = height.to_i
+  options = {
+    :new_w => (params[:new_w] || width).to_i,
+    :new_h => (params[:new_h] || height).to_i,
+    :x => (params[:x] || 0).to_i,
+    :y => (params[:y] || 0).to_i,
+    :layer => (params[:layer] || 1).to_i
+  }
   mixer_request do
-    m.add_stream(params[:width].to_i, params[:height].to_i)
+    m.add_stream(width, height, options)
   end
 end
 
@@ -45,7 +57,6 @@ post '/streams/:id/remove' do
     m.remove_stream(params[:id].to_i)
   end
 end
-
 
 get '/streams' do
   content_type :json
@@ -73,8 +84,7 @@ post '/streams/:id/modify' do
     :y => params[:y].to_i,
     :layer => params[:layer].to_i,
     :keep_text => params[:keep_aspect_ratio].downcase,
-    :keep_aspect_ratio => true if keep_text == "true" || keep_text == "1"
-                        else false
+    :keep_aspect_ratio => (keep_text == "true" || keep_text == "1")
   }
 
   mixer_request do
@@ -107,5 +117,12 @@ post '/destinations/:id/remove' do
   content_type :json
   mixer_request do
     m.remove_destination(params[:id].to_i)
+  end
+end
+
+post '/stop' do
+  content_type :json
+  mixer_request do
+    m.stop
   end
 end
