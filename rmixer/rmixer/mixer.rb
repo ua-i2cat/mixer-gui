@@ -12,28 +12,8 @@ module RMixer
       @conn = RMixer::Connector.new(host, port)
     end
 
-    def start(options = {})
-      legal_options = [:layout, :max_streams, :input_port]
-      options.each do |o|
-        raise MixerError unless legal_options.include?(o)
-      end
-      if options.include?(:size)
-        width, height = options[:size].split('x')
-      end
-      response = @conn.start({
-        :width => width,
-        :height => height,
-        :max_streams => options[:max_streams],
-        :input_port => options[:input_port]
-        })
-      raise MixerError, reponse[:error] if response[:error]
-      return response
-    end
-
     def streams
-      response = get_streams
-      raise MixerError, response[:error] if response[:error]
-      response[:streams]
+      get_streams[:streams]
     end
 
     def stream(id)
