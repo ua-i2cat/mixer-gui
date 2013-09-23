@@ -1,0 +1,31 @@
+<div class="panel {{panel_type}}">
+  <div class="panel-heading">
+    <h3 class="panel-title">Stream 1</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-condensed">
+      <tbody>
+        <tr>
+          <td><strong>Original Size</strong></td>
+          <td>{{orig_w}}x{{orig_h}}</td>
+        </tr>
+        <tr>
+          <td><strong>Current Size</strong></td>
+          <td>{{width}}x{{height}}</td>
+        </tr>
+        <tr>
+          <td><strong>Position</strong></td>
+          <td>{{x}}x{{y}}</td>
+        </tr>
+        <tr>
+          <td><strong>Layer</strong></td>
+          <td>{{layer}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+      <button type="submit" class="btn pull-right {{button_type}} btn-sm">{{button_text}}</button>
+    </div>
+  </div>
+</div>
