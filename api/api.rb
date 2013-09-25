@@ -47,14 +47,14 @@ post '/streams/add' do
     :layer => (params[:layer] || 1).to_i
   }
   mixer_request do
-    m.add_stream(width, height, options)
+    m.add_stream(width, height, options).to_json
   end
 end
 
 post '/streams/:id/remove' do
   content_type :json
   mixer_request do
-    m.remove_stream(params[:id].to_i)
+    m.remove_stream(params[:id].to_i).to_json
   end
 end
 
@@ -131,13 +131,13 @@ end
 post '/destinations/:id/remove' do
   content_type :json
   mixer_request do
-    m.remove_destination(params[:id].to_i)
+    m.remove_destination(params[:id].to_i).to_json
   end
 end
 
 post '/stop' do
   content_type :json
   mixer_request do
-    m.stop
+    m.stop.to_json
   end
 end

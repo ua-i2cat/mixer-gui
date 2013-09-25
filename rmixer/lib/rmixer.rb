@@ -33,8 +33,10 @@ module RMixer
       if @conn.respond_to?(name)
         response = @conn.send(name, *args, &block)
         raise MixerError, response[:error] if response[:error]
-        return nil if response.include?(:error) && response.size == 1
+        #return nil if response.include?(:error) && response.size == 1
         return response
+      else
+        super
       end
     end
 
