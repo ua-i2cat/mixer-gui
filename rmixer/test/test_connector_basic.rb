@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'json'
-require_relative '../rmixer/connector'
+require 'rmixer'
 
 class TestConnectorBasic < Test::Unit::TestCase
 

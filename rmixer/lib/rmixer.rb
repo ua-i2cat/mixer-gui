@@ -1,4 +1,5 @@
-require_relative 'connector'
+require "rmixer/version"
+require "connector"
 
 
 module RMixer

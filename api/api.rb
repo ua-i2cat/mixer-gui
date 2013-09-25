@@ -1,5 +1,5 @@
 require 'sinatra'
-require '../rmixer/rmixer/mixer'
+require 'rmixer'
 
 
 m = RMixer::Mixer.new 'localhost', 7777
@@ -69,6 +69,20 @@ get '/streams/:id' do
   content_type :json
   mixer_request do
     m.stream(params[:id].to_i).to_json
+  end
+end
+
+post '/streams/:id/enable' do
+  content_type :json
+  mixer_request do
+    m.enable_stream(params[:id].to_i).to_json
+  end
+end
+
+post '/streams/:id/disable' do
+  content_type :json
+  mixer_request do
+    m.disable_stream(params[:id].to_i).to_json
   end
 end
 
