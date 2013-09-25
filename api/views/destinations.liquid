@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Current Destinations</div>
+  <div class="panel-body">
+    <!-- Table -->
+    <table class="table table-hover">
+      {% for dest in destinations %}
+      <tr>
+        <th>ID</th>
+        <th>IP</th>
+        <th>Port</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>dest.id</td>
+        <td>dest.ip</td>
+        <td>dest.port</td>
+        <td>
+          <button type="button" class="btn btn-danger btn-xs">Remove</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <form class="form-inline" role="form">
+      <div class="form-group col-lg-6">
+        <label class="sr-only" for="ip">IP</label>
+        <input type="text" class="form-control input-sm" id="ip" placeholder="IP">
+      </div>
+      <div class="form-group col-lg-3">
+        <label class="sr-only" for="port">Port</label>
+        <input type="number" class="form-control input-sm" id="port" placeholder="Port">
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">Add</button>
+    </form>
+  </div>
+</div>
