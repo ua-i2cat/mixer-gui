@@ -1,0 +1,173 @@
+Modification
+------------
+
+{
+    "action": "start_mixer",
+    "params": {
+        "width": 1280,
+        "height": 720,
+        "max_streams": 8,
+        "input_port": 5004
+    }
+}
+
+{
+    "action": "add_stream",
+    "params": {
+        "width": 1280,
+        "height": 720
+    }
+}
+
+{
+    "action": "remove_stream",
+    "params": {
+        "id": 3
+    }
+}
+
+{
+    "action": "modify_stream",
+    "params": {
+        "id": 3,
+        "width": 400,
+        "height": 400,
+        "x": 200,
+        "y": 100,
+        "layer": 2,
+        "keep_aspect_ratio": false
+    }
+}
+
+{
+    "action": "modify_layout",
+    "params": {
+        "width": 600,
+        "height": 600,
+        "resize_streams": true
+    }
+}
+
+{
+    "action": "add_destination",
+    "params": {
+        "ip": "127.0.0.1",
+        "port": 8000
+    }
+}
+
+{
+    "action": "enable_stream",
+    "params": {
+        "id": 3
+    }
+}
+
+{
+    "action": "disable_stream",
+    "params": {
+        "id": 3
+    }
+}
+
+{
+    "action": "remove_destination",
+    "params": {
+        "id": 4
+    }
+}
+
+{
+    "action": "stop_mixer",
+    "params": null
+}
+
+{
+    "action": "exit_mixer",
+    "params": null
+}
+
+{
+    "error": null
+}
+
+Information
+-----------
+
+Query:
+
+{
+    "action": "get_streams",
+    "params": null
+}
+
+Response
+
+{
+    "streams": [
+    {
+        "id": 1,
+        "orig_width": 0,
+        "orig_height": 0,
+        "width": 0,
+        "height": 0,
+        "x": 0,
+        "y": 0,
+        "layer": 0,
+        "active": true
+    },
+    {
+        "id": 2,
+        ...
+    },
+    ...
+    ]
+}
+
+--
+
+Query:
+
+{
+    "action": "get_stream",
+    "params": {
+        "id": 1
+    } 
+}
+
+Response: ...
+
+--
+
+Query:
+
+{
+    "action": "get_destinations",
+    "params": null
+}
+
+Response:
+
+{
+    "destinations": [
+        {
+            "id": 1,
+            "ip": "",
+            "port": 4000
+        },
+        ...
+    ]
+}
+
+--
+
+Query:
+
+{
+    "action": "get_destination",
+    "params": {
+        "id": 2
+    }
+}
+
+Response: ...
