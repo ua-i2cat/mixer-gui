@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/bs/assets/ico/favicon.png">
+
+    <title>Mixer Mockup</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bs/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/bs/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Mixer</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="col-sm-8">
+        <div class="page-header">
+          <h1>Streams</h1>
+        </div>
+        {% for stream in streams %}
+        <div class="col-sm-4">
+        	<div class="panel {{stream.panel_type}}">
+            <div class="panel-heading">
+    			    <h3 class="panel-title">Stream {{stream.id}}</h3>
+  					</div>
+  				  <div class="panel-body">
+    				  <table class="table table-condensed">
+      				  <tbody>
+        				  <tr>
+          				  <td><strong>Original Size</strong></td>
+          				  <td>{{stream.orig_w}}x{{stream.orig_h}}</td>
+        				  </tr>
+        				  <tr>
+          				  <td><strong>Current Size</strong></td>
+          				  <td>{{stream.width}}x{{stream.height}}</td>
+        				  </tr>
+        				  <tr>
+          				  <td><strong>Position</strong></td>
+          				  <td>{{stream.x}}x{{stream.y}}</td>
+        				  </tr>
+        				  <tr>
+          				  <td><strong>Layer</strong></td>
+          	  			<td>{{stream.layer}}</td>
+        					</tr>
+      					</tbody>
+    					</table>
+    					<div>
+      				  <button type="submit" class="btn btn-danger btn-sm" onClick="location.href='sth.html'">Remove</button>
+      					<button type="submit" class="btn pull-right {{stream.button_type}} btn-sm">{{stream.button_text}}</button>
+    					</div>
+  					</div>
+					</div>
+        </div>
+        {% endfor %}
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Stream 3</h3>
+              </div>
+              <div class="panel-body">
+
+                <form class="form" role="form">
+                  <div class="form-group">
+                    <label for="width">Original Width</label>
+                    <input type="number" class="form-control input-sm" id="width" placeholder="Original Width">
+                  </div>
+                  <div class="form-group">
+                    <label for="height">Original Height</label>
+                    <input type="number" class="form-control input-sm" id="height" placeholder="Original Height">
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="panel panel-default">
+  				<!-- Default panel contents -->
+          <div class="page-header">
+            <h1>Destinations</h1>
+          </div>
+  				<div class="panel-heading">Current Destinations</div>
+  				<div class="panel-body">
+    				<!-- Table -->
+    				<table class="table table-hover">
+      				<tr>
+        				<th>ID</th>
+        				<th>IP</th>
+        				<th>Port</th>
+        				<th></th>
+      				</tr>
+              {% for dest in destinations %}
+      				<tr>
+        				<td>{{dest.id}}</td>
+        				<td>{{dest.ip}}</td>
+        				<td>{{dest.port}}</td>
+        				<td>
+          				<button type="button" class="btn btn-danger btn-xs">Remove</button>
+        				</td>
+      				</tr>
+      				{% endfor %}
+    				</table>
+    				<form class="form-inline" role="form">
+      				<div class="form-group col-lg-6">
+        				<label class="sr-only" for="ip">IP</label>
+        				<input type="text" class="form-control input-sm" id="ip" placeholder="IP">
+      				</div>
+      				<div class="form-group col-lg-3">
+        				<label class="sr-only" for="port">Port</label>
+        				<input type="number" class="form-control input-sm" id="port" placeholder="Port">
+      				</div>
+      				<button type="submit" class="btn btn-primary btn-sm">Add</button>
+    				</form>
+  				</div>
+				</div>
+      </div>
+      
+      <div class="col-sm-4">
+        <div class="page-header">
+          <h1>Grids</h1>
+        </div>
+        <div class="panel panel-default container">
+          <div class="panel-body">
+            <div class="btn-group" data-toggle="buttons">
+              <div class="row btn-group">
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option1">
+                  <img id="22" src="image/22.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option2">
+                  <img id="32" src="image/32.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option3">
+                  <img id="33" src="image/33.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+              </div>
+              <div class="row btn-group">
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option1" src="image/upleft.jpeg"> jajajaj
+                  <img src="image/upleft.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option2">
+                  <img src="image/downright.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+                <label class="btn btn-default">
+                  <input type="radio" name="options" id="option3">
+                  <img src="image/lena.jpg" alt="Lena" height="80" width="80" class="img-rounded">
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bs/assets/js/jquery.js"></script>
+    <script src="/bs/dist/js/bootstrap.min.js"></script>
+    <script src="/bs/assets/js/holder.js"></script>
+  </body>
+</html>
+
