@@ -4,7 +4,9 @@ PATH
     rmixer (0.0.1)
 
 GEM
+  remote: https://rubygems.org/
   specs:
+    liquid (2.5.2)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -18,5 +20,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  liquid
   rmixer!
   sinatra
