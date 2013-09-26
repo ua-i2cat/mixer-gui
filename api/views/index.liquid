@@ -65,7 +65,7 @@
         </div>
         {% for stream in streams %}
         <div class="col-sm-4">
-          {% if stream.active %}
+          {% if stream.active == 1 %}
         	<div class="panel panel-success">
           {% else %}
           <div class="panel panel-warning">
@@ -95,11 +95,17 @@
       					</tbody>
     					</table>
     					<div>
-      				  <button type="submit" class="btn btn-danger btn-sm" onClick="location.href='sth.html'">Remove</button>
-                {% if stream.active %}
-      					<button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
+                <form action="/app/streams/{{ stream.id }}/remove" method="post">
+      				    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+                {% if stream.active == 1 %}
+                <form action="/app/streams/{{ stream.id }}/disable" method="post">
+                  <button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
+                </form>
                 {% else %}
-                <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
+                <form action="/app/streams/{{ stream.id }}/enable" method="post">
+                  <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
+                </form>
                 {% endif %}
     					</div>
   					</div>
@@ -113,14 +119,14 @@
               </div>
               <div class="panel-body">
 
-                <form class="form" role="form">
+                <form class="form" role="form" action="/app/streams/add" method="post">
                   <div class="form-group">
                     <label for="width">Original Width</label>
-                    <input type="number" class="form-control input-sm" id="width" placeholder="Original Width">
+                    <input type="number" class="form-control input-sm" name="width" id="width" placeholder="Original Width">
                   </div>
                   <div class="form-group">
                     <label for="height">Original Height</label>
-                    <input type="number" class="form-control input-sm" id="height" placeholder="Original Height">
+                    <input type="number" class="form-control input-sm" name="height" id="height" placeholder="Original Height">
                   </div>
                   <button type="submit" class="btn btn-primary btn-sm">Add</button>
                 </form>
@@ -153,19 +159,21 @@
         				<td>{{dest.ip}}</td>
         				<td>{{dest.port}}</td>
         				<td>
-          				<button type="button" class="btn btn-danger btn-xs">Remove</button>
+                  <form class="form" role="form" action="/app/destinations/{{dest.id}}/remove" method="post">
+          				  <button type="submit" class="btn btn-danger btn-xs">Remove</button>
+                  </form>
         				</td>
       				</tr>
       				{% endfor %}
     				</table>
-    				<form class="form-inline" role="form">
+    				<form class="form-inline" role="form" action="/app/destinations/add" method="post">
       				<div class="form-group col-lg-6">
         				<label class="sr-only" for="ip">IP</label>
-        				<input type="text" class="form-control input-sm" id="ip" placeholder="IP">
+        				<input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
       				</div>
       				<div class="form-group col-lg-3">
         				<label class="sr-only" for="port">Port</label>
-        				<input type="number" class="form-control input-sm" id="port" placeholder="Port">
+        				<input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
       				</div>
       				<button type="submit" class="btn btn-primary btn-sm">Add</button>
     				</form>
@@ -181,7 +189,15 @@
           <div class="panel-body">
 
           <div class="row btn-group" data-toggle="buttons">
-          <label class="btn btn-default">
+          {% for i in (1..6) %}
+            <button class="btn btn-default {% if i == grid %}active{% endif %}">
+              <img onclick="set_grid({{i}})" src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
+            </button>
+          {% endfor %}
+          </div>
+<!--
+          <div class="row btn-group" data-toggle="buttons">
+          <label class="btn btn-default active">
             <input type="radio" name="options" id="option1">
             <img src="image/22.jpeg" alt="2x2" class="img-rounded" width="80" height="80">
           </label>
@@ -206,6 +222,7 @@
             <img src="image/lena.jpg" alt="lena" class="img-rounded" width="80" height="80">
           </label>
           </div>
+          -->
           </div>
         </div>
       </div>
