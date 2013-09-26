@@ -1,11 +1,22 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require 'liquid'
 require 'sinatra'
 require 'rmixer'
 
 
 m = RMixer::Mixer.new 'localhost', 7777
+
+k2s =
+  lambda do |h|
+    Hash === h ?
+      Hash[
+        h.map do |k, v|
+          [k.respond_to?(:to_s) ? k.to_s : k, k2s[v]]
+        end
+      ] : h
+  end
 
 def mixer_request
   begin
@@ -15,6 +26,29 @@ def mixer_request
     { :error => e.message }.to_json
   end
 end
+
+get '/' do
+  content_type :html
+  puts m.streams
+  puts k2s[m.streams]
+  puts m.destinations
+  puts k2s[m.destinations]
+
+  streams = []
+  m.streams.each do |s|
+    streams << k2s[s]
+  end
+  destinations = []
+  m.destinations.each do |d|
+    destinations << k2s[d]
+  end
+
+  liquid :index, :locals => {
+    "streams" => streams,
+    "destinations" => destinations
+  }
+end
+
 
 post '/start' do
   content_type :json

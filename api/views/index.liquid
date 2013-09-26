@@ -65,7 +65,11 @@
         </div>
         {% for stream in streams %}
         <div class="col-sm-4">
-        	<div class="panel {{stream.panel_type}}">
+          {% if stream.active %}
+        	<div class="panel panel-success">
+          {% else %}
+          <div class="panel panel-warning">
+          {% endif %}
             <div class="panel-heading">
     			    <h3 class="panel-title">Stream {{stream.id}}</h3>
   					</div>
@@ -74,7 +78,7 @@
       				  <tbody>
         				  <tr>
           				  <td><strong>Original Size</strong></td>
-          				  <td>{{stream.orig_w}}x{{stream.orig_h}}</td>
+          				  <td>{{stream.orig_width}}x{{stream.orig_height}}</td>
         				  </tr>
         				  <tr>
           				  <td><strong>Current Size</strong></td>
@@ -92,7 +96,11 @@
     					</table>
     					<div>
       				  <button type="submit" class="btn btn-danger btn-sm" onClick="location.href='sth.html'">Remove</button>
-      					<button type="submit" class="btn pull-right {{stream.button_type}} btn-sm">{{stream.button_text}}</button>
+                {% if stream.active %}
+      					<button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
+                {% else %}
+                <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
+                {% endif %}
     					</div>
   					</div>
 					</div>
