@@ -28,11 +28,11 @@ module RMixer
       params = {
         :width => width,
         :height => height,
-        :new_w => options[:new_w],
-        :new_h => options[:new_h],
-        :x => options[:x],
-        :y => options[:y],
-        :layer => options[:layer]
+        :new_w => options[:new_w] || width,
+        :new_h => options[:new_h] || height,
+        :x => options[:x] || 0,
+        :y => options[:y] || 0,
+        :layer => options[:layer] || 1
       }
       get_response("add_stream", params)
     end
