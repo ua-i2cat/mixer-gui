@@ -95,15 +95,15 @@
       					</tbody>
     					</table>
     					<div>
-                <form action="/app/streams/{{ stream.id }}/remove" method="post">
-      				    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                <form class="form-inline pull-left" action="/app/streams/{{ stream.id }}/remove" method="post">
+      				    <button type="submit" class="btn btn-danger btn-sm pull-left">Remove</button>
                 </form>
                 {% if stream.active == 1 %}
-                <form action="/app/streams/{{ stream.id }}/disable" method="post">
+                <form class="form-inline pull-right" action="/app/streams/{{ stream.id }}/disable" method="post">
                   <button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
                 </form>
                 {% else %}
-                <form action="/app/streams/{{ stream.id }}/enable" method="post">
+                <form class="form-inline pull-right" action="/app/streams/{{ stream.id }}/enable" method="post">
                   <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
                 </form>
                 {% endif %}
