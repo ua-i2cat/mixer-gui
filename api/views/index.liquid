@@ -210,7 +210,14 @@
     <script src="/bs/assets/js/holder.js"></script>
     <script type="text/javascript">
       function set_grid(id){
-        $.post("/app/grid", { id: id });
+        // $.post("/app/grid", { id: id });
+        $.ajax({
+          type: 'POST',
+          url: "/app/grid",
+          data: "id=" + id,
+          async:false
+        });
+        location.reload();
       }
     </script>
   </body>
