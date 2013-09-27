@@ -4,6 +4,12 @@ Mixer remote API Ruby implementation
 
 ## Installation
 
+While developing:
+
+    $ bundle install
+
+To make it available system-wide:
+
     $ gem build rmixer.gemspec
     $ gem install rmixer-<version>.gem
 
