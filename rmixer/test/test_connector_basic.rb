@@ -125,4 +125,9 @@ class TestConnectorBasic < Test::Unit::TestCase
     assert_equal(id, request[:params][:id])
   end
 
+  def test_get_layout_request
+    request = @connector.get_layout
+    assert_equal("get_layout", request[:action])
+  end
+
 end 
