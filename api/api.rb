@@ -10,17 +10,28 @@ class MixerAPI < Sinatra::Base
   set :mixer, RMixer::Mixer.new('localhost', 7777)
   set :grid, 1
 
-  def mixer_request
+  def error_json
     begin
       yield
     rescue RMixer::MixerError => e
       status 500
       { :error => e.message }.to_json
+    rescue Errno::ECONNREFUSED => e
+      status 500
+      { :error => e.message }.to_json
+    end
+  end
+
+  def error_html
+    begin
+      yield
+    rescue Errno::ECONNREFUSED, RMixer::MixerError => e
+      status 500
+      halt liquid :error, :locals => { :message => e.message }
     end
   end
 
   def dashboard
-    
     k2s =
     lambda do |h|
       Hash === h ?
@@ -32,12 +43,15 @@ class MixerAPI < Sinatra::Base
     end
 
     streams = []
-    settings.mixer.streams.each do |s|
-      streams << k2s[s]
-    end
     destinations = []
-    settings.mixer.destinations.each do |d|
-      destinations << k2s[d]
+    
+    error_html do
+      settings.mixer.streams.each do |s|
+        streams << k2s[s]
+      end
+      settings.mixer.destinations.each do |d|
+        destinations << k2s[d]
+      end
     end
 
     liquid :index, :locals => {
@@ -54,7 +68,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/streams/:id/disable' do
     content_type :html
-    mixer_request do
+    error_html do
       settings.mixer.disable_stream(params[:id].to_i).to_json
     end
     redirect '/app'
@@ -62,7 +76,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/streams/:id/enable' do
     content_type :html
-    mixer_request do
+    error_html do
       settings.mixer.enable_stream(params[:id].to_i).to_json
     end
     redirect '/app'
@@ -70,7 +84,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/streams/:id/remove' do
     content_type :html
-    mixer_request do
+    error_html do
       settings.mixer.remove_stream(params[:id].to_i).to_json
     end
     redirect '/app'
@@ -94,7 +108,7 @@ class MixerAPI < Sinatra::Base
       :y => (params[:y] || 0).to_i,
       :layer => (params[:layer] || 1).to_i
     }
-    mixer_request do
+    error_html do
       settings.mixer.add_stream(width, height, options).to_json
     end
     redirect '/app'
@@ -102,7 +116,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/destinations/add' do
     content_type :html
-    mixer_request do
+    error_html do
       settings.mixer.add_destination(params[:ip], params[:port].to_i).to_json
     end
     redirect '/app'
@@ -110,7 +124,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/destinations/:id/remove' do
     content_type :html
-    mixer_request do
+    error_html do
       settings.mixer.remove_destination(params[:id].to_i).to_json
     end
     redirect '/app'
@@ -118,7 +132,7 @@ class MixerAPI < Sinatra::Base
 
   post '/app/grid' do
     content_type :html
-    mixer_request do
+    error_html do
       # settings.mixer.set_grid(params[:id].to_i).to_json
     end
     settings.grid = params[:id].to_i
@@ -142,7 +156,7 @@ class MixerAPI < Sinatra::Base
       :input_port => params[:input_port].to_i
       }
 
-    mixer_request do
+    error_json do
       settings.mixer.start(params).to_json
     end
   end
@@ -159,42 +173,42 @@ class MixerAPI < Sinatra::Base
       :y => (params[:y] || 0).to_i,
       :layer => (params[:layer] || 1).to_i
     }
-    mixer_request do
+    error_json do
       settings.mixer.add_stream(width, height, options).to_json
     end
   end
 
   post '/streams/:id/remove' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.remove_stream(params[:id].to_i).to_json
     end
   end
 
   get '/streams' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.streams.to_json
     end
   end
 
   get '/streams/:id' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.stream(params[:id].to_i).to_json
     end
   end
 
   post '/streams/:id/enable' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.enable_stream(params[:id].to_i).to_json
     end
   end
 
   post '/streams/:id/disable' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.disable_stream(params[:id].to_i).to_json
     end
   end
@@ -215,42 +229,42 @@ class MixerAPI < Sinatra::Base
       :keep_aspect_ratio => (keep_text == "true" || keep_text == "1")
     }
 
-    mixer_request do
+    error_json do
       settings.mixer.modify_stream(id, width, height, options).to_json
     end
   end
 
   get '/destinations' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.destinations.to_json
     end
   end
 
   post '/destinations/add' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.add_destination(params[:ip], params[:port].to_i).to_json
     end
   end
 
   get '/destinations/:id' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.destination(params[:id].to_i).to_json
     end
   end
 
   post '/destinations/:id/remove' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.remove_destination(params[:id].to_i).to_json
     end
   end
 
   post '/stop' do
     content_type :json
-    mixer_request do
+    error_json do
       settings.mixer.stop.to_json
     end
   end

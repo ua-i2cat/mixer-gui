@@ -126,6 +126,10 @@ module RMixer
       get_response("get_destination", params)
     end
 
+    def get_layout
+      get_response("get_layout")
+    end
+
     private
     def get_response(action, params = nil)
       request = {

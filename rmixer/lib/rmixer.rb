@@ -62,7 +62,11 @@ module RMixer
 
     def method_missing(name, *args, &block)
       if @conn.respond_to?(name)
-        response = @conn.send(name, *args, &block)
+        begin
+          response = @conn.send(name, *args, &block)
+        rescue JSON::ParserError, Errno::ECONNREFUSED => e
+          raise MixerError, e.message
+        end
         raise MixerError, response[:error] if response[:error]
         #return nil if response.include?(:error) && response.size == 1
         return response
