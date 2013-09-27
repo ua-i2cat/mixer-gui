@@ -88,11 +88,3 @@ def calc_down_right_box (box_width = 0.25, box_height = 0.25)
   }
 
 end
-
-
-GRIDS = []
-
-GRIDS << calc_upper_left_grid_6
-GRIDS << calc_regular_grid
-
-puts GRIDS

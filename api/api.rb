@@ -133,7 +133,7 @@ class MixerAPI < Sinatra::Base
   post '/app/grid' do
     content_type :html
     error_html do
-      # settings.mixer.set_grid(params[:id].to_i).to_json
+      settings.mixer.set_grid(params[:id].to_i).to_json
     end
     settings.grid = params[:id].to_i
     redirect '/app'

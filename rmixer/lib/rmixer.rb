@@ -32,10 +32,10 @@ module RMixer
 
     def set_grid(id)
       layout_size = get_layout
-      grid = case id
+      case id
         when 0
         when 1 #2x2
-          calc_regular_grid(2,2)
+          grid = calc_regular_grid(2,2)
           streams.zip(grid).each do |stream, grid|
             if grid.nil?
               disable_stream(stream[:id])
