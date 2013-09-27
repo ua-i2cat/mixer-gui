@@ -2,6 +2,8 @@ require 'rubygems'
 require 'sinatra'
 require 'liquid'
 
+set :grid, 1
+
 get '/' do
   liquid :index, :locals => { 'streams' => [{
 	'id' => 1, 

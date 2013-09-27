@@ -190,8 +190,8 @@
 
           <div class="row btn-group" data-toggle="buttons">
           {% for i in (1..6) %}
-            <button class="btn btn-default {% if i == grid %}active{% endif %}">
-              <img onclick="set_grid({{i}})" src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
+            <button class="btn btn-default {% if i == grid %}active{% endif %}" id="button{{i}}" onclick="set_grid({{i}})">
+              <img  src="image/{{i}}.jpeg" id="button{{i}}" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
             </button>
           {% endfor %}
           </div>
@@ -235,6 +235,11 @@
     <script src="/bs/assets/js/jquery.js"></script>
     <script src="/bs/dist/js/bootstrap.min.js"></script>
     <script src="/bs/assets/js/holder.js"></script>
+    <script type="text/javascript">
+      function set_grid(id){
+        $.post("/app/grid", { id: id });
+      }
+    </script>
   </body>
 </html>
 
