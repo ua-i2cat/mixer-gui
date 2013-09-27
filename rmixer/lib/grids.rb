@@ -69,6 +69,7 @@ def calc_upper_left_grid_6 (up_left_width = 0.75, up_left_height = 0.75)
 end
 
 def calc_down_right_box (box_width = 0.25, box_height = 0.25)
+  grid = []
   width = 1.0
   height = 1.0
   grid << {
@@ -84,7 +85,7 @@ def calc_down_right_box (box_width = 0.25, box_height = 0.25)
     :height => box_height,
     :x => width - box_width,
     :y => height - box_height,
-    :layer => 0
+    :layer => 1
   }
 
 end

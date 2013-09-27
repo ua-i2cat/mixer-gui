@@ -49,20 +49,21 @@ module RMixer
         raise MixerError, "Invalid grid id"
       end
         
-        streams.zip(grid).each do |stream, grid|
-          if grid.nil?
-            disable_stream(stream[:id])
-          elsif stream.nil?
-          else
-            modify_stream(
-              stream[:id], 
-              (grid[:width]*layout_size[:width]).floor, 
-              (grid[:height]*layout_size[:height]).floor, 
-              :x => (grid[:x]*layout_size[:width]).floor,
-              :y => (grid[:y]*layout_size[:height]).floor
-            )
-          end
+      streams.zip(grid).each do |stream, grid|
+        if grid.nil?
+          disable_stream(stream[:id])
+        elsif stream.nil?
+        else
+          modify_stream(
+            stream[:id], 
+            (grid[:width]*layout_size[:width]).floor, 
+            (grid[:height]*layout_size[:height]).floor, 
+            :x => (grid[:x]*layout_size[:width]).floor,
+            :y => (grid[:y]*layout_size[:height]).floor,
+            :layer => grid[:layer]
+          )
         end
+      end
     end
 
     def method_missing(name, *args, &block)
