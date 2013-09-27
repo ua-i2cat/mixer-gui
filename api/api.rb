@@ -110,6 +110,7 @@ class MixerAPI < Sinatra::Base
     }
     error_html do
       settings.mixer.add_stream(width, height, options).to_json
+      settings.mixer.set_grid(settings.grid).to_json
     end
     redirect '/app'
   end

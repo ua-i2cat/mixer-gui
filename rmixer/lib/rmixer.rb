@@ -34,6 +34,7 @@ module RMixer
       layout_size = get_layout
       grid = case id
       when 0
+        return
       when 1 #2x2
         calc_regular_grid(2,2)
       when 2 #3x2
@@ -49,18 +50,18 @@ module RMixer
         raise MixerError, "Invalid grid id"
       end
         
-      streams.zip(grid).each do |stream, grid|
-        if grid.nil?
-          disable_stream(stream[:id])
-        elsif stream.nil?
+      streams.zip(grid).each do |s, g|
+        if g.nil?
+          disable_stream(s[:id])
+        elsif s.nil?
         else
           modify_stream(
-            stream[:id], 
-            (grid[:width]*layout_size[:width]).floor, 
-            (grid[:height]*layout_size[:height]).floor, 
-            :x => (grid[:x]*layout_size[:width]).floor,
-            :y => (grid[:y]*layout_size[:height]).floor,
-            :layer => grid[:layer]
+            s[:id], 
+            (g[:width]*layout_size[:width]).floor, 
+            (g[:height]*layout_size[:height]).floor, 
+            :x => (g[:x]*layout_size[:width]).floor,
+            :y => (g[:y]*layout_size[:height]).floor,
+            :layer => g[:layer]
           )
         end
       end
