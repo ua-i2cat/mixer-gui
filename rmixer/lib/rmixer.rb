@@ -32,31 +32,36 @@ module RMixer
 
     def set_grid(id)
       layout_size = get_layout
-      case id
-        when 0
-        when 1 #2x2
-          grid = calc_regular_grid(2,2)
-          streams.zip(grid).each do |stream, grid|
-            if grid.nil?
-              disable_stream(stream[:id])
-            elsif stream.nil?
-            else
-              modify_stream(
-                stream[:id], 
-                (grid[:width]*layout_size[:width]).floor, 
-                (grid[:height]*layout_size[:height]).floor, 
-                :x => (grid[:x]*layout_size[:width]).floor,
-                :y => (grid[:y]*layout_size[:height]).floor
-              )
-            end
+      grid = case id
+      when 0
+      when 1 #2x2
+        calc_regular_grid(2,2)
+      when 2 #3x2
+        calc_regular_grid(3,2)
+      when 3 #3x3
+        calc_regular_grid(3,3)
+      when 4 #upperleft
+        calc_upper_left_grid_6
+      when 5 #downright
+        calc_down_right_box
+      when 6 #lena
+      else
+        raise MixerError, "Invalid grid id"
+      end
+        
+        streams.zip(grid).each do |stream, grid|
+          if grid.nil?
+            disable_stream(stream[:id])
+          elsif stream.nil?
+          else
+            modify_stream(
+              stream[:id], 
+              (grid[:width]*layout_size[:width]).floor, 
+              (grid[:height]*layout_size[:height]).floor, 
+              :x => (grid[:x]*layout_size[:width]).floor,
+              :y => (grid[:y]*layout_size[:height]).floor
+            )
           end
-        when 2 #3x2
-        when 3 #3x3
-        when 4 #upperleft
-        when 5 #downright
-        when 6 #lena
-        else
-          raise MixerError, "Invalid grid id"
         end
     end
 
