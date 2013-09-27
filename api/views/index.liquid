@@ -188,41 +188,14 @@
         <div class="panel panel-default container">
           <div class="panel-body">
 
-          <div class="row btn-group" data-toggle="buttons">
-          {% for i in (1..6) %}
-            <button class="btn btn-default {% if i == grid %}active{% endif %}" id="button{{i}}" onclick="set_grid({{i}})">
-              <img  src="image/{{i}}.jpeg" id="button{{i}}" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
-            </button>
-          {% endfor %}
-          </div>
-<!--
-          <div class="row btn-group" data-toggle="buttons">
-          <label class="btn btn-default active">
-            <input type="radio" name="options" id="option1">
-            <img src="image/22.jpeg" alt="2x2" class="img-rounded" width="80" height="80">
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="options" id="option2">
-            <img src="image/32.jpeg" alt="3x2" class="img-rounded" width="80" height="80">
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="options" id="option3">
-            <img src="image/33.jpeg" alt="3x3" class="img-rounded" width="80" height="80">
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="options" id="option4">
-            <img src="image/upleft.jpeg" alt="upleft" class="img-rounded" width="80" height="80">
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="options" id="option5">
-            <img src="image/downright.jpeg" alt="downright" class="img-rounded" width="80" height="80">
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="options" id="option6">
-            <img src="image/lena.jpg" alt="lena" class="img-rounded" width="80" height="80">
-          </label>
-          </div>
-          -->
+            <div class="row btn-group" data-toggle="buttons">
+            {% for i in (1..6) %}
+              <label class="btn btn-default {% if i == grid %}active{% endif %}" onclick="set_grid({{i}})">
+                <input type="radio" name="options" id="option1">
+                <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
+              </label>
+            {% endfor %}
+            </div>
           </div>
         </div>
       </div>
