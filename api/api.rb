@@ -8,7 +8,7 @@ require 'rmixer'
 class MixerAPI < Sinatra::Base
 
   set :mixer, RMixer::Mixer.new('localhost', 7777)
-  set :grid, 1
+  set :grid, 0
 
   def error_json
     begin
