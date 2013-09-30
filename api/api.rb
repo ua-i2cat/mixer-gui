@@ -287,10 +287,19 @@ class MixerAPI < Sinatra::Base
     end
   end
 
+  post '/grid' do
+    content_type :json
+    error_html do
+      settings.mixer.set_grid(params[:id].to_i).to_json
+    end
+    settings.grid = params[:id].to_i
+  end
+
   post '/stop' do
     content_type :json
     error_json do
       settings.mixer.stop.to_json
     end
   end
+
 end
