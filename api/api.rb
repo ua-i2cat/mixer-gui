@@ -9,6 +9,7 @@ class MixerAPI < Sinatra::Base
 
   set :mixer, RMixer::Mixer.new('localhost', 7777)
   set :grid, 0
+  set :started, false
 
   def error_json
     begin
@@ -57,7 +58,8 @@ class MixerAPI < Sinatra::Base
     liquid :index, :locals => {
       "streams" => streams,
       "destinations" => destinations,
-      "grid" => settings.grid
+      "grid" => settings.grid,
+      "started" => settings.started
     }
   end
 
@@ -66,10 +68,29 @@ class MixerAPI < Sinatra::Base
     dashboard
   end
 
+  post '/app/start' do
+    content_type :html
+    # TODO get 'started' status from the mixer itself?
+    error_html do
+      #mixer.start(params)
+    end
+    settings.started = true
+    redirect '/app'
+  end
+
+  post '/app/stop' do
+    content_type :html
+    error_html do
+      #mixer.stop
+    end
+    settings.started = false
+    redirect '/app'
+  end
+
   post '/app/streams/:id/disable' do
     content_type :html
     error_html do
-      settings.mixer.disable_stream(params[:id].to_i).to_json
+      settings.mixer.disable_stream(params[:id].to_i)
     end
     redirect '/app'
   end
@@ -77,7 +98,7 @@ class MixerAPI < Sinatra::Base
   post '/app/streams/:id/enable' do
     content_type :html
     error_html do
-      settings.mixer.enable_stream(params[:id].to_i).to_json
+      settings.mixer.enable_stream(params[:id].to_i)
     end
     redirect '/app'
   end
@@ -85,7 +106,7 @@ class MixerAPI < Sinatra::Base
   post '/app/streams/:id/remove' do
     content_type :html
     error_html do
-      settings.mixer.remove_stream(params[:id].to_i).to_json
+      settings.mixer.remove_stream(params[:id].to_i)
     end
     redirect '/app'
   end
@@ -109,8 +130,8 @@ class MixerAPI < Sinatra::Base
       :layer => (params[:layer] || 1).to_i
     }
     error_html do
-      settings.mixer.add_stream(width, height, options).to_json
-      settings.mixer.set_grid(settings.grid).to_json
+      settings.mixer.add_stream(width, height, options)
+      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
@@ -118,7 +139,7 @@ class MixerAPI < Sinatra::Base
   post '/app/destinations/add' do
     content_type :html
     error_html do
-      settings.mixer.add_destination(params[:ip], params[:port].to_i).to_json
+      settings.mixer.add_destination(params[:ip], params[:port].to_i)
     end
     redirect '/app'
   end
@@ -126,7 +147,7 @@ class MixerAPI < Sinatra::Base
   post '/app/destinations/:id/remove' do
     content_type :html
     error_html do
-      settings.mixer.remove_destination(params[:id].to_i).to_json
+      settings.mixer.remove_destination(params[:id].to_i)
     end
     redirect '/app'
   end
@@ -134,7 +155,7 @@ class MixerAPI < Sinatra::Base
   post '/app/grid' do
     content_type :html
     error_html do
-      settings.mixer.set_grid(params[:id].to_i).to_json
+      settings.mixer.set_grid(params[:id].to_i)
     end
     settings.grid = params[:id].to_i
     redirect '/app'

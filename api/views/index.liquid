@@ -37,7 +37,7 @@
           <a class="navbar-brand" href="#">Mixer</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+          <!-- <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -54,17 +54,35 @@
               </ul>
             </li>
           </ul>
+            -->
+          {% if started %}
+            <form class="navbar-form navbar-right" action="/app/stop" method="post">
+              <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+            </form>
+          {% else %}
+            <form class="navbar-form navbar-right" role="form" action="/app/start" method="post">
+              <button type="submit" class="btn btn-primary btn-sm pull-right">Start</button>
+              <div class="form-group col-md-3 pull-right">
+                <label class="sr-only" for="width">Width</label>
+                <input type="number" class="form-control input-sm" name="width" id="width" placeholder="Width">
+              </div>
+              <div class="form-group col-md-3 pull-right">
+                <label class="sr-only" for="height">Height</label>
+                <input type="number" class="form-control input-sm" name="height" id="height" placeholder="Height">
+              </div>
+            </form>
+          {% endif %}
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="col-sm-8">
+    <div class="container">
+      <div class="col-md-8">
         <div class="page-header">
           <h1>Streams</h1>
         </div>
         {% for stream in streams %}
-        <div class="col-sm-4">
+        <div class="col-md-4">
           {% if stream.active == 1 %}
         	<div class="panel panel-success">
           {% else %}
@@ -112,7 +130,7 @@
 					</div>
         </div>
         {% endfor %}
-          <div class="col-sm-4">
+          <div class="col-md-4">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">New Stream</h3>
@@ -134,71 +152,71 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
-
-      <div class="col-sm-4">
-          <!-- Default panel contents -->
-          <div class="page-header">
-            <h1>Destinations</h1>
-          </div>
-        <div class="panel panel-default">
-  				<div class="panel-heading">Current Destinations</div>
-  				<div class="panel-body">
-    				<!-- Table -->
-    				<table class="table table-hover">
-      				<tr>
-        				<th>ID</th>
-        				<th>IP</th>
-        				<th>Port</th>
-        				<th></th>
-      				</tr>
-              {% for dest in destinations %}
-      				<tr>
-        				<td>{{dest.id}}</td>
-        				<td>{{dest.ip}}</td>
-        				<td>{{dest.port}}</td>
-        				<td>
-                  <form class="form" role="form" action="/app/destinations/{{dest.id}}/remove" method="post">
-          				  <button type="submit" class="btn btn-danger btn-xs">Remove</button>
-                  </form>
-        				</td>
-      				</tr>
-      				{% endfor %}
-    				</table>
-    				<form class="form-inline" role="form" action="/app/destinations/add" method="post">
-      				<div class="form-group col-lg-6">
-        				<label class="sr-only" for="ip">IP</label>
-        				<input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
-      				</div>
-      				<div class="form-group col-lg-3">
-        				<label class="sr-only" for="port">Port</label>
-        				<input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
-      				</div>
-      				<button type="submit" class="btn btn-primary btn-sm">Add</button>
-    				</form>
+      <!-- <div class="row"> -->
+        <div class="col-md-4">
+            <!-- Default panel contents -->
+            <div class="page-header">
+              <h1>Destinations</h1>
+            </div>
+          <div class="panel panel-default">
+    				<div class="panel-heading">Current Destinations</div>
+    				<div class="panel-body">
+      				<!-- Table -->
+      				<table class="table table-hover">
+        				<tr>
+          				<th>ID</th>
+          				<th>IP</th>
+          				<th>Port</th>
+          				<th></th>
+        				</tr>
+                {% for dest in destinations %}
+        				<tr>
+          				<td>{{dest.id}}</td>
+          				<td>{{dest.ip}}</td>
+          				<td>{{dest.port}}</td>
+          				<td>
+                    <form class="form" role="form" action="/app/destinations/{{dest.id}}/remove" method="post">
+            				  <button type="submit" class="btn btn-danger btn-xs">Remove</button>
+                    </form>
+          				</td>
+        				</tr>
+        				{% endfor %}
+      				</table>
+      				<form class="form-inline" role="form" action="/app/destinations/add" method="post">
+        				<div class="form-group col-lg-6 pull-left">
+          				<label class="sr-only" for="ip">IP</label>
+          				<input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+        				</div>
+        				<div class="form-group col-lg-4 pull-left">
+          				<label class="sr-only" for="port">Port</label>
+          				<input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+        				</div>
+        				<button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+      				</form>
+    				</div>
   				</div>
-				</div>
-      </div>
-      
-      <div class="col-sm-4">
-        <div class="page-header">
-          <h1>Grids</h1>
         </div>
-        <div class="panel panel-default container">
-          <div class="panel-body">
+        
+        <div class="col-md-4">
+          <div class="page-header">
+            <h1>Grids</h1>
+          </div>
+          <div class="panel panel-default container">
+            <div class="panel-body">
 
-            <div class="row btn-group" data-toggle="buttons">
-            {% for i in (1..6) %}
-              <label class="btn btn-default {% if i == grid %}active{% endif %}" onclick="set_grid({{i}})">
-                <input type="radio" name="options" id="option1">
-                <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="80" height="80">
-              </label>
-            {% endfor %}
+              <div class="row btn-group" data-toggle="buttons">
+              {% for i in (1..6) %}
+                <label class="btn btn-default {% if i == grid %}active{% endif %}" onclick="set_grid({{i}})">
+                  <input type="radio" name="options" id="option1">
+                  <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+                </label>
+              {% endfor %}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <!-- </div>  row -->
     </div> <!-- /container -->
 
 
