@@ -26,32 +26,32 @@ module RMixer
 
     def add_stream(width, height, options = {})
       params = {
-        :width => width,
-        :height => height,
-        :new_w => options[:new_w] || width,
-        :new_h => options[:new_h] || height,
-        :x => options[:x] || 0,
-        :y => options[:y] || 0,
-        :layer => options[:layer] || 1
+        :width => width.to_i,
+        :height => height.to_i,
+        :new_w => (options[:new_w] || width).to_i,
+        :new_h => (options[:new_h] || height).to_i,
+        :x => (options[:x] || 0).to_i,
+        :y => (options[:y] || 0).to_i,
+        :layer => (options[:layer] || 1).to_i
       }
       get_response("add_stream", params)
     end
 
     def remove_stream(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("remove_stream", params)
     end
 
     def modify_stream(id, width, height, options = {})
       params = {
-        :id => id,
-        :width => width,
-        :height => height,
-        :x => options[:x] || 0,
-        :y => options[:y] || 0,
-        :layer => options[:layer] || 0,
+        :id => id.to_i,
+        :width => width.to_i,
+        :height => height.to_i,
+        :x => (options[:x] || 0).to_i,
+        :y => (options[:y] || 0).to_i,
+        :layer => (options[:layer] || 0).to_i,
         :keep_aspect_ratio => options[:keep_aspect_ratio] || false
       }
       get_response("modify_stream", params)
@@ -59,22 +59,22 @@ module RMixer
 
     def disable_stream(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("disable_stream", params)
     end
 
     def enable_stream(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("enable_stream", params)
     end
 
     def modify_layout(width, height, resize_streams = true)
       params = {
-        :width => width,
-        :height => height,
+        :width => width.to_i,
+        :height => height.to_i,
         :resize_streams => resize_streams
       }
       get_response("modify_layout", params)
@@ -82,15 +82,15 @@ module RMixer
 
     def add_destination(ip, port)
       params = {
-        :ip => ip,
-        :port => port
+        :ip => ip.to_s,
+        :port => port.to_i
       }
       get_response("add_destination", params)
     end
 
     def remove_destination(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("remove_destination", params)
     end
@@ -110,7 +110,7 @@ module RMixer
 
     def get_stream(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("get_stream", params)
     end
@@ -121,7 +121,7 @@ module RMixer
 
     def get_destination(id)
       params = {
-        :id => id
+        :id => id.to_i
       }
       get_response("get_destination", params)
     end
