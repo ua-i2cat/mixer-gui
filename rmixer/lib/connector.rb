@@ -16,10 +16,10 @@ module RMixer
 
     def start(options = {})
       params = {
-        :width => options[:width] || 1280,
-        :height => options[:height] || 720,
-        :max_streams => options[:max_streams] || 8,
-        :input_port => options[:input_port] || 5004
+        :width => (options[:width] || 1280).to_i,
+        :height => (options[:height] || 720).to_i,
+        :max_streams => (options[:max_streams] || 8).to_i,
+        :input_port => (options[:input_port] || 5004).to_i
       }
       get_response("start_mixer", params)
     end

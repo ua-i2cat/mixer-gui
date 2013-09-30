@@ -28,7 +28,7 @@ class MixerAPI < Sinatra::Base
       yield
     rescue Errno::ECONNREFUSED, RMixer::MixerError => e
       status 500
-      halt liquid :error, :locals => { :message => e.message }
+      halt liquid :error, :locals => { "message" => e.message }
     end
   end
 
@@ -43,24 +43,27 @@ class MixerAPI < Sinatra::Base
         ] : h
     end
 
-    streams = []
-    destinations = []
-    
-    error_html do
-      settings.mixer.streams.each do |s|
-        streams << k2s[s]
+    if settings.started
+      streams = []
+      destinations = []
+      
+      error_html do
+        settings.mixer.streams.each do |s|
+          streams << k2s[s]
+        end
+        settings.mixer.destinations.each do |d|
+          destinations << k2s[d]
+        end
       end
-      settings.mixer.destinations.each do |d|
-        destinations << k2s[d]
-      end
-    end
 
-    liquid :index, :locals => {
-      "streams" => streams,
-      "destinations" => destinations,
-      "grid" => settings.grid,
-      "started" => settings.started
-    }
+      liquid :index, :locals => {
+        "streams" => streams,
+        "destinations" => destinations,
+        "grid" => settings.grid
+      }
+    else
+      liquid :before
+    end
   end
 
   get '/app' do
@@ -72,7 +75,7 @@ class MixerAPI < Sinatra::Base
     content_type :html
     # TODO get 'started' status from the mixer itself?
     error_html do
-      #mixer.start(params)
+      settings.mixer.start(params)
     end
     settings.started = true
     redirect '/app'
@@ -81,7 +84,7 @@ class MixerAPI < Sinatra::Base
   post '/app/stop' do
     content_type :html
     error_html do
-      #mixer.stop
+      settings.mixer.stop
     end
     settings.started = false
     redirect '/app'
