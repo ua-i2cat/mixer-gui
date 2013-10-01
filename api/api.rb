@@ -66,6 +66,8 @@ class MixerAPI < Sinatra::Base
     end
   end
 
+  # Web App Methods
+
   get '/app' do
     content_type :html
     dashboard
@@ -164,6 +166,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
+  # JSON API Methods
 
   post '/start' do
     content_type :json
