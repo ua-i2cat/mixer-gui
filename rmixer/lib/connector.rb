@@ -15,9 +15,11 @@ module RMixer
     end
 
     def start(options = {})
+      width = options[:width].to_i
+      height = options[:height].to_i
       params = {
-        :width => (options[:width] || 1280).to_i,
-        :height => (options[:height] || 720).to_i,
+        :width => (width != 0) ? width : 1280,
+        :height => (height != 0) ? height : 720,
         :max_streams => (options[:max_streams] || 8).to_i,
         :input_port => (options[:input_port] || 5004).to_i
       }
