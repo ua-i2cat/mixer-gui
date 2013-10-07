@@ -7,9 +7,8 @@ require 'rmixer'
 
 class MixerAPI < Sinatra::Base
 
-  set :mixer, RMixer::Mixer.new('localhost', 7777)
+  set :mixer, RMixer::Mixer.new('192.168.10.219', 7777)
   set :grid, 0
-  set :started, false
 
   def error_json
     begin
@@ -32,6 +31,14 @@ class MixerAPI < Sinatra::Base
     end
   end
 
+  helpers do
+    def started
+      error_html do
+        settings.mixer.get_state[:state] != 0
+      end
+    end
+  end
+
   def dashboard
     k2s =
     lambda do |h|
@@ -43,7 +50,7 @@ class MixerAPI < Sinatra::Base
         ] : h
     end
 
-    if settings.started
+    if started
       streams = []
       destinations = []
       
@@ -75,11 +82,9 @@ class MixerAPI < Sinatra::Base
 
   post '/app/start' do
     content_type :html
-    # TODO get 'started' status from the mixer itself?
     error_html do
       settings.mixer.start(params)
     end
-    settings.started = true
     redirect '/app'
   end
 
@@ -88,7 +93,6 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.stop
     end
-    settings.started = false
     redirect '/app'
   end
 
