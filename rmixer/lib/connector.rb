@@ -130,6 +130,10 @@ module RMixer
       get_response("get_layout")
     end
 
+    def get_state
+      get_response("get_state")
+    end
+
     private
     def get_response(action, params = nil)
       request = {
