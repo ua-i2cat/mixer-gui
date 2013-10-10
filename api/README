@@ -1,0 +1,20 @@
+Mixer Web API / Sinatra
+=======================
+
+Installation
+------------
+
+    $ bundle install
+
+Running
+-------
+
+- Locally (development)
+
+    $ rackup
+
+- With unicorn: configure the application with `unicorn.rb`. **Remember to use absolute paths in this file**.
+
+    $ unicorn -c unicorn.rb [... options ...]
+
+
