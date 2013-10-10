@@ -7,7 +7,9 @@ require 'rmixer'
 
 class MixerAPI < Sinatra::Base
 
-  set :mixer, RMixer::Mixer.new('192.168.10.219', 7777)
+  set :ip, '127.0.0.1'
+  set :port, 7777
+  set :mixer, RMixer::Mixer.new(settings.ip, settings.port)
   set :grid, 0
 
   def error_json
