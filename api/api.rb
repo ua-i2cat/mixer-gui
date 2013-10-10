@@ -77,6 +77,10 @@ class MixerAPI < Sinatra::Base
 
   # Web App Methods
 
+  get '/' do
+    redirect '/app'
+  end
+
   get '/app' do
     content_type :html
     dashboard
