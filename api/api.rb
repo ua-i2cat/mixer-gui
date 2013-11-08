@@ -114,6 +114,7 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       settings.mixer.enable_stream(params[:id].to_i)
+      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
@@ -241,6 +242,7 @@ class MixerAPI < Sinatra::Base
     content_type :json
     error_json do
       settings.mixer.enable_stream(params[:id].to_i).to_json
+      settings.mixer.set_grid(settings.grid).to_json
     end
   end
 
