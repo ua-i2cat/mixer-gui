@@ -20,23 +20,13 @@ module RMixer
       params = {
         :width => (width != 0) ? width : 1280,
         :height => (height != 0) ? height : 720,
-        :max_streams => (options[:max_streams] || 8).to_i,
         :input_port => (options[:input_port] || 5004).to_i
       }
       get_response("start_mixer", params)
     end
 
-    def add_stream(width, height, options = {})
-      params = {
-        :width => width.to_i,
-        :height => height.to_i,
-        :new_w => (options[:new_w] || width).to_i,
-        :new_h => (options[:new_h] || height).to_i,
-        :x => (options[:x] || 0).to_i,
-        :y => (options[:y] || 0).to_i,
-        :layer => (options[:layer] || 1).to_i
-      }
-      get_response("add_stream", params)
+    def add_stream
+      get_response("add_stream")
     end
 
     def remove_stream(id)
@@ -46,17 +36,108 @@ module RMixer
       get_response("remove_stream", params)
     end
 
-    def modify_stream(id, width, height, options = {})
+    def add_crop_to_stream(id, crop_width, crop_height, crop_x, crop_y, options = {})
       params = {
         :id => id.to_i,
+        :crop_width => crop_width.to_i,
+        :crop_height => crop_height.to_i,
+        :crop_x => crop_x.to_i,
+        :crop_y => crop_y.to_i,
+        :layer => (options[:layer] || 1).to_i,
+        :rsz_width => (options[:rsz_width] || crop_width).to_i,
+        :rsz_height => (options[:rsz_height] || crop_height).to_i,
+        :rsz_x => (options[:rsz_x] || x).to_i,
+        :rsz_y => (options[:rsz_y] || y).to_i
+      }
+      get_response("add_crop_to_stream", params)
+    end
+
+    def modify_crop_from_stream(stream_id, crop_id, width, height, x, y)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i,
         :width => width.to_i,
         :height => height.to_i,
-        :x => (options[:x] || 0).to_i,
-        :y => (options[:y] || 0).to_i,
-        :layer => (options[:layer] || 1).to_i,
-        :keep_aspect_ratio => options[:keep_aspect_ratio] || false
+        :x => x.to_i,
+        :y => y.to_i
       }
-      get_response("modify_stream", params)
+      get_response("modify_crop_from_stream", params)
+    end
+
+    def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i,
+        :width => width.to_i,
+        :height => height.to_i,
+        :x => x.to_i,
+        :y => y.to_i,
+        :layer => layer.to_i
+      }
+      get_response("modify_crop_resizing_from_stream", params)
+    end
+
+    def remove_crop_from_stream(stream_id, crop_id)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i
+      }
+      get_response("remove_crop_from_stream", params)
+    end
+
+    def add_crop_to_layout(width, height, x, y, output_width, output_height)
+      params = {
+        :width => width.to_i,
+        :height => height.to_i,
+        :x => x.to_i,
+        :y => y.to_i,
+        :output_width => output_width.to_i,
+        :output_height => output_height.to_i
+      }
+      get_response("add_crop_to_layout", params)
+    end
+
+    def modify_crop_from_layout(crop_id, width, height, x, y)
+      params = {
+        :crop_id => crop_id.to_i,
+        :width => width.to_i,
+        :height => height.to_i,
+        :x => x.to_i,
+        :y => y.to_i
+      }
+      get_response("modify_crop_from_layout", params)
+    end
+
+    def modify_crop_resizing_from_layout(crop_id, width, height)
+      params = {
+        :crop_id => crop_id.to_i,
+        :width => width.to_i,
+        :height => height.to_i
+      }
+      get_response("modify_crop_resizing_from_layout", params)
+    end
+
+    def remove_crop_from_layout(crop_id)
+      params = {
+        :crop_id => crop_id.to_i
+      }
+      get_response("remove_crop_from_layout", params)
+    end
+
+    def enable_crop_from_stream(stream_id, crop_id)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i
+      }
+      get_response("enable_crop_from_stream", params)
+    end
+
+    def disable_crop_from_stream(stream_id, crop_id)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i
+      }
+      get_response("disable_crop_from_stream", params)
     end
 
     def disable_stream(id)
@@ -73,17 +154,9 @@ module RMixer
       get_response("enable_stream", params)
     end
 
-    def modify_layout(width, height, resize_streams = true)
+    def add_destination(stream_id, ip, port)
       params = {
-        :width => width.to_i,
-        :height => height.to_i,
-        :resize_streams => resize_streams
-      }
-      get_response("modify_layout", params)
-    end
-
-    def add_destination(ip, port)
-      params = {
+        :stream_id => stream_id.to_i,
         :ip => ip.to_s,
         :port => port.to_i
       }
