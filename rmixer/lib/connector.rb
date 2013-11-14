@@ -53,7 +53,7 @@ module RMixer
         :height => height.to_i,
         :x => (options[:x] || 0).to_i,
         :y => (options[:y] || 0).to_i,
-        :layer => (options[:layer] || 0).to_i,
+        :layer => (options[:layer] || 1).to_i,
         :keep_aspect_ratio => options[:keep_aspect_ratio] || false
       }
       get_response("modify_stream", params)
