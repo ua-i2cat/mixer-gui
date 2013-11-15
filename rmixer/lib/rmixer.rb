@@ -5,9 +5,12 @@ require "grids"
 
 module RMixer
 
+  # Generic MixerError
   class MixerError < StandardError
   end
 
+  # Proxy class that delegates most of it functions to a RMixer::Connector
+  # instance while adding exception and convenience methods.
   class Mixer
 
     def initialize(host, port)

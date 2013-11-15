@@ -1,13 +1,33 @@
 require 'socket'
 require 'json'
 
-
 module RMixer
 
+  # ==== Overview
+  # Class that allows the module to connect with a remote mixer instance and communicate
+  # with it using, under the hood, the <b>Mixer JSON API</b>.
+  #
+  # ==== TCP Socket Usage
+  # A RMixer::Connector instance creates a new TCP connection for each method.
+  # This means that multiple instances of this class can be working at the
+  # same time without blocking each other.
+  #
   class Connector
 
-    attr_reader :host, :port
+    # Remote mixer host address
+    attr_reader :host
+    # Remote mixer port address
+    attr_reader:port
 
+    # Initializes a new RMixer::Connector instance.
+    #
+    # ==== Attributes
+    #
+    # * +host+ - Remote mixer host address
+    # * +port+ - Remote mixer port address
+    # * +testing+ - Optional testing parameter. If set to +:request+, changes
+    #   the behaviour of RMixer::Connector#get_response
+    #
     def initialize(host, port, testing = nil)
       @host = host
       @port = port
@@ -175,19 +195,11 @@ module RMixer
     end
 
     def exit
-      result = get_response("exit_mixer")
-      return result
+      get_response("exit_mixer")
     end
 
     def get_streams
       get_response("get_streams")
-    end
-
-    def get_stream(id)
-      params = {
-        :id => id.to_i
-      }
-      get_response("get_stream", params)
     end
 
     def get_destinations
@@ -209,7 +221,32 @@ module RMixer
       get_response("get_state")
     end
 
-    private
+    # Method that composes the JSON request and sends it over TCP to the
+    # targetted remote mixer instance.
+    #
+    # Returns the Mixer's JSON response converted to a hash unless the
+    # RMixer::Mixer was initialized with <tt>testing = :request</tt> option.
+    #
+    # ==== Testing 
+    #
+    # If <tt>@testing == :request</tt>, this method returns the hash that should
+    # be sent over TCP without actually sending it.
+    #
+    # ==== Debugging
+    #
+    # This method is intended to be used internally, but is exposed since
+    # it's useful for debugging.
+    #
+    # ==== Attributes
+    # 
+    # * +action+ - The action to be sent
+    # * +params+ - Optional hash containing the parameters to be sent
+    #
+    # ==== Examples
+    #   
+    #   mixer = RMixer::Mixer.new "localhost", 7777
+    #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })   
+    #
     def get_response(action, params = nil)
       request = {
         :action => action,
