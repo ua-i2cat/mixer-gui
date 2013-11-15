@@ -13,6 +13,11 @@ To make it available system-wide:
     $ gem build rmixer.gemspec
     $ gem install rmixer-<version>.gem
 
+To generate the documentation:
+
+    $ rake rdoc
+
+Or just `rake`, since `rdoc` is the default task.
 
 ## Usage
 
