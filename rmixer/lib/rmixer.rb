@@ -5,7 +5,8 @@ require "grids"
 
 module RMixer
 
-  # Generic MixerError
+  # Generic error to be thrown when an error is returned by the remote
+  # *Mixer* instance
   class MixerError < StandardError
   end
 
