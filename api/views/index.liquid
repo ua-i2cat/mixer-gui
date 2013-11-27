@@ -243,6 +243,7 @@
           <h1>Output Streams</h1>
         </div>
         <div class="panel-group" id="output_streams"> <!--OUTPUT STREAM PANEL GROUP -->
+          {% for output_stream in output_streams %}
           {% for crop in output_stream.crops %}
           <div class="panel panel-success"> <!-- STREAM -->
             <div class="panel-heading">
@@ -274,16 +275,16 @@
                         </div>
                         <div class="col-md-3">
                           <div class="input-group input-group-sm">
-                            <span class="input-group-addon">Crop<br>position</span>
-                            <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_w }}>
-                            <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_w }}>
+                            <span class="input-group-addon">Crop<br>pos.</span>
+                            <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_x }}>
+                            <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_y }}>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="input-group input-group-sm">
                             <span class="input-group-addon">Output<br>size</span>
                             <input class="form-control input-sm" name="dst_w" id="dst_w" value={{ crop.dst_w }}>
-                            <input class="form-control input-sm" name="dst_h" id="dst_h" value={{ crop.dst_w }}>
+                            <input class="form-control input-sm" name="dst_h" id="dst_h" value={{ crop.dst_h }}>
                           </div>
                         </div>
                         <div class="col-md-2">
@@ -343,6 +344,7 @@
               </div>
             </div> <!-- STREAM COLLAPSE-->
           </div> <!-- STREAM -->
+          {% endfor %}
           {% endfor %}
           <div class="panel panel-default"> <!-- ADD STREAM FORM -->
             <div class="panel-heading">

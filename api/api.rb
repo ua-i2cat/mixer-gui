@@ -76,13 +76,21 @@ class MixerAPI < Sinatra::Base
     end
 
     if started
+      i_streams = settings.mixer.input_streams
       input_streams = []
+      
+      i_streams.each do |s|
+        crops = []
+        s[:crops].each do |c|
+          crops << k2s[c]
+        end
+        s[:crops] = crops
+        input_streams << k2s[s]
+      end
+
+      o_stream = settings.mixer.output_stream
       output_stream = []
       o_crops = []
-
-
-        i_streams = settings.mixer.input_streams
-        o_stream = settings.mixer.output_stream
       
       o_stream[:crops].each do |c|
         o_crops << k2s[c]
@@ -91,11 +99,9 @@ class MixerAPI < Sinatra::Base
       o_stream[:crops] = o_crops
       output_stream << k2s[o_stream]
 
-      puts output_stream
-
       liquid :index, :locals => {
         "input_streams" => input_streams,
-        "output_stream" => output_stream,
+        "output_streams" => output_stream,
         "grid" => settings.grid
       }
     else
@@ -165,7 +171,7 @@ class MixerAPI < Sinatra::Base
   post '/app/streams/:id/crops/:c_id/modify' do
     content_type :html
     error_html do
-      settings.modify_crop_from_stream(
+      settings.mixer.modify_crop_from_stream(
                 params[:id].to_i,
                 params[:c_id].to_i,
                 params[:c_w].to_i,
@@ -174,7 +180,7 @@ class MixerAPI < Sinatra::Base
                 params[:c_y].to_i
               )
 
-      settings.modify_crop_resizing_from_stream(
+      settings.mixer.modify_crop_resizing_from_stream(
                 params[:id].to_i,
                 params[:c_id].to_i,
                 params[:dst_w].to_i,
@@ -251,7 +257,7 @@ class MixerAPI < Sinatra::Base
   post '/app/output_stream/crops/:id/destinations/add' do
     content_type :html
     error_html do
-      settings.mixer.add_destination(params[:id].to_i, params[:ip].to_i, params[:port].to_i)
+      settings.mixer.add_destination(params[:id].to_i, params[:ip], params[:port].to_i)
     end
     redirect '/app'
   end
