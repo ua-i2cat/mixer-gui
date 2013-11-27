@@ -78,22 +78,18 @@ class MixerAPI < Sinatra::Base
     if started
       input_streams = []
       output_stream = []
+      o_crops = []
 
-      i_streams = settings.mixer.input_streams
-      o_stream = settings.mixer.output_stream
+
+        i_streams = settings.mixer.input_streams
+        o_stream = settings.mixer.output_stream
       
       o_stream[:crops].each do |c|
-        output_stream << k2s[c]
+        o_crops << k2s[c]
       end
 
-      error_html do
-        settings.mixer.input_streams.each do |s|
-          input_streams << k2s[s]
-        end
-        settings.mixer.output_stream.each do |d|
-          output_stream << k2s[d]
-        end
-      end
+      o_stream[:crops] = o_crops
+      output_stream << k2s[o_stream]
 
       puts output_stream
 
