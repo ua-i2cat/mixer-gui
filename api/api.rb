@@ -214,6 +214,17 @@ class MixerAPI < Sinatra::Base
     }
     error_json do
       settings.mixer.add_stream(width, height, options).to_json
+      streams = settings.mixer.streams
+      if streams.length <= 4
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      elsif streams.length > 4 and streams.length <= 6
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      else
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      end
     end
   end
 
@@ -221,6 +232,17 @@ class MixerAPI < Sinatra::Base
     content_type :json
     error_json do
       settings.mixer.remove_stream(params[:id].to_i).to_json
+      streams = settings.mixer.streams
+      if streams.length <= 4
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      elsif streams.length > 4 and streams.length <= 6
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      else
+        settings.mixer.set_grid(1)
+        settings.grid = 1
+      end
     end
   end
 
