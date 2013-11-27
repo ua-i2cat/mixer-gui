@@ -18,4 +18,4 @@ Running
     $ mkdir tmp
     $ mkdir tmp/pids tmp/sockets
     $ mkdir log
-    $ unicorn -c unicorn.rb -D [... options ...]
+    $ unicorn -c unicorn.rb --port 8080 [... options ...]

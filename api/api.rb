@@ -202,8 +202,9 @@ class MixerAPI < Sinatra::Base
 
   post '/streams/add' do
     content_type :json
-    width = 500
-    height = 500
+    width, height = params[:size].downcase.split('x')
+    width = width.to_i
+    height = height.to_i
     options = {
       :new_w => (params[:new_w] || width).to_i,
       :new_h => (params[:new_h] || height).to_i,

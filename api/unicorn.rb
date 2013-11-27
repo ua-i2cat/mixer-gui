@@ -1,7 +1,8 @@
 # set path to app that will be used to configure unicorn, 
 # note the trailing slash in this example
 
-@dir = "/home/uadev/mixerwebgui/api/"
+d = File.dirname(__FILE__)
+@dir = "#{d}/"
 
 worker_processes 2
 working_directory @dir
