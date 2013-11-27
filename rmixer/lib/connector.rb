@@ -221,23 +221,16 @@ module RMixer
       get_response("exit_mixer")
     end
 
-    def get_streams
+    def get_input_streams
       get_response("get_streams")
     end
 
-    def get_destinations
-      get_response("get_destinations")
-    end
-
-    def get_destination(id)
-      params = {
-        :id => id.to_i
-      }
-      get_response("get_destination", params)
-    end
-
-    def get_layout
+    def get_output_stream
       get_response("get_layout")
+    end
+
+    def get_layout_size
+      get_response("get_layout_size")
     end
 
     def get_state

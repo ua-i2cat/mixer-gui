@@ -106,38 +106,44 @@
                         <form class="form" role="form" action="/app/streams/add" method="post">
                           <div class="col-md-12">
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>size</span>
                                   <input class="form-control input-sm" name="c_w" id="c_w" value=300>
                                   <input class="form-control input-sm" name="c_h" id="c_h" value=300>
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>position</span>
                                   <input class="form-control input-sm" name="c_x" id="c_x" value=100>
                                   <input class="form-control input-sm" name="c_y" id="c_y" value=100>
                                 </div>
                               </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" value=1>
+                                </div>
+                              </div>
                             </div>
                             <div class = "row">&nbsp;</div>
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>size</span>
                                   <input class="form-control input-sm" name="dst_w" id="dst_w" value=300>
                                   <input class="form-control input-sm" name="dst_h" id="dst_h" value=300>
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>position</span>
                                   <input class="form-control input-sm" name="dst_x" id="dst_x" value=100>
                                   <input class="form-control input-sm" name="dst_y" id="dst_y" value=100>
                                 </div>
                               </div>
-                              <div class="col-md-2">
+                              <div class="col-md-2 col-md-offset-2">
                                 <button type="submit" class="btn btn-primary btn-sm">Apply</button>
                               </div>
                             </div>

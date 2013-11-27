@@ -51,7 +51,7 @@
         </div>
         <div class="col-md-12"> <!--Input streams panel group column -->
           <div class="panel-group" id="input_streams"> <!--Input stream panel group -->
-          {% for stream in streams %}
+          {% for stream in input_streams %}
         	  <div class="panel panel-success"> <!--Stream-->
               <div class="panel-heading">
                 <h3 class="panel-title">
@@ -118,38 +118,44 @@
                         <div class="panel-body">
                           <form class="form" role="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/modify" method="post">
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>size</span>
                                   <input class="form-control input-sm" name="c_w" id="c_w" value={{ crop.c_w }}>
                                   <input class="form-control input-sm" name="c_h" id="c_h" value={{ crop.c_h }}>
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>position</span>
                                   <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_x }}>
                                   <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_y }}>
                                 </div>
                               </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" value={{ crop.layer }}>
+                                </div>
+                              </div>
                             </div>
                             <div class = "row">&nbsp;</div>
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>size</span>
                                   <input class="form-control input-sm" name="dst_w" id="dst_w" value={{ crop.dst_w }}>
                                   <input class="form-control input-sm" name="dst_h" id="dst_h" value={{ crop.dst_h }}>
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>position</span>
                                   <input class="form-control input-sm" name="dst_x" id="dst_x" value={{ crop.dst_x }}>
                                   <input class="form-control input-sm" name="dst_y" id="dst_y" value={{ crop.dst_y }}>
                                 </div>
                               </div>
-                              <div class="col-md-2">
+                              <div class="col-md-2 col-md-offset-2">
                                 <button type="submit" class="btn btn-primary btn-sm">Apply</button>
                               </div>
                             </div>
@@ -213,7 +219,7 @@
                 </div>
               </div> <!-- Stream collapse -->
             </div> <!-- Stream -->
-            {% endfor %}
+          {% endfor %}
             <div class="panel panel-default"> <!-- New input stream form -->
               <div class="panel-heading">
                 <h3 class="panel-title">
@@ -237,7 +243,7 @@
           <h1>Output Streams</h1>
         </div>
         <div class="panel-group" id="output_streams"> <!--OUTPUT STREAM PANEL GROUP -->
-          {% for crop in output.crops %}
+          {% for crop in output_stream.crops %}
           <div class="panel panel-success"> <!-- STREAM -->
             <div class="panel-heading">
               <h3 class="panel-title">
@@ -256,7 +262,7 @@
             <div id="output_{{ crop.id }}" class="panel-collapse collapse in"> <!-- STREAM COLLAPSE-->
               <div class="panel-body">
                 <div class = "row">
-                  <form class="form" role="form" action="/app/outputs/{{ crop.id }}/modify" method="post">
+                  <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/modify" method="post">
                     <div class="col-md-12">
                       <div class = "row">
                         <div class="col-md-3">
@@ -266,14 +272,14 @@
                             <input class="form-control input-sm" name="c_h" id="c_h" value={{ crop.c_h }}>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                           <div class="input-group input-group-sm">
                             <span class="input-group-addon">Crop<br>position</span>
                             <input class="form-control input-sm" name="c_x" id="c_x" value={{ crop.c_w }}>
                             <input class="form-control input-sm" name="c_y" id="c_y" value={{ crop.c_w }}>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                           <div class="input-group input-group-sm">
                             <span class="input-group-addon">Output<br>size</span>
                             <input class="form-control input-sm" name="dst_w" id="dst_w" value={{ crop.dst_w }}>
@@ -309,7 +315,7 @@
                           <td>{{ destination.ip }}</td>
                           <td>{{ destination.port }}</td>
                           <td> 
-                            <form class="form" action="/app/outputs/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
+                            <form class="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/{{ destination.id }}/remove" method="post">
                               <button type="submit" class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-remove"></span>
                               </button>
@@ -318,7 +324,7 @@
                         </tr>
                         {% endfor %}
                         <tr>
-                          <form class="form" role="form" action="/app/outputs/{{ crop.id }}/destinations/add" method="post">
+                          <form class="form" role="form" action="/app/output_stream/crops/{{ crop.id }}/destinations/add" method="post">
                           <td>
                             <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
                           </td>
@@ -337,6 +343,7 @@
               </div>
             </div> <!-- STREAM COLLAPSE-->
           </div> <!-- STREAM -->
+          {% endfor %}
           <div class="panel panel-default"> <!-- ADD STREAM FORM -->
             <div class="panel-heading">
               <h3 class="panel-title">
@@ -348,28 +355,28 @@
             <div id="output_new" class="panel-collapse collapse in"> <!-- STREAM COLLAPSE-->
               <div class="panel-body">
                 <div class = "row">
-                  <form class="form" role="form" action="/app/outputs/add" method="post">
+                  <form class="form" role="form" action="/app/output_stream/crops/add" method="post">
                     <div class="col-md-12">
                       <div class = "row">
                         <div class="col-md-3">
                           <div class="input-group input-group-sm">
                             <span class="input-group-addon">Crop<br>size</span>
-                            <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Crop width">
-                            <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Crop height">
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="input-group input-group-sm">
-                            <span class="input-group-addon">Crop<br>position</span>
-                            <input class="form-control input-sm" name="c_x" id="c_x" placeholder="Crop x pos.">
-                            <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Crop x pos.">
+                            <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Width">
+                            <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Height">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Crop<br>position</span>
+                            <input class="form-control input-sm" name="c_x" id="c_x" placeholder="X">
+                            <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Y">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="input-group input-group-sm">
                             <span class="input-group-addon">Output<br>size</span>
-                            <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Output width">
-                            <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Output height">
+                            <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Width">
+                            <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Height">
                           </div>
                         </div>
                         <div class="col-md-2">

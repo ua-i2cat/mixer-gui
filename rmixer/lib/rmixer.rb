@@ -41,24 +41,16 @@ module RMixer
       @conn = RMixer::Connector.new(host, port)
     end
 
-    def streams
-      get_streams[:streams]
+    def input_streams
+      get_input_streams[:input_streams]
     end
 
-    def stream(id)
-      get_stream(id)
-    end
-
-    def destinations
-      get_destinations[:destinations]
-    end
-
-    def destination(id)
-      get_destination(id)
+    def output_stream
+      get_output_stream[:output_stream]
     end
 
     def set_grid(id)
-      layout_size = get_layout
+      layout_size = get_layout_size
       grid = case id
       when 0
         return
@@ -76,20 +68,23 @@ module RMixer
       else
         raise MixerError, "Invalid grid id"
       end
-        
-      streams.zip(grid).each do |s, g|
-        if g.nil?
-          disable_stream(s[:id])
-        elsif s.nil?
-        else
-          modify_stream(
-            s[:id], 
-            (g[:width]*layout_size[:width]).floor, 
-            (g[:height]*layout_size[:height]).floor, 
-            :x => (g[:x]*layout_size[:width]).floor,
-            :y => (g[:y]*layout_size[:height]).floor,
-            :layer => g[:layer]
-          )
+
+      input_streams.each do |s|
+        s.crops.zip(grid).each do |c, g|
+          if g.nil?
+            disable_crop_from_stream(s[:id], c[:id])
+          elsif c.nil?
+          else
+            modify_crop_resizing_from_stream(
+              s[:id],
+              c[:id], 
+              (g[:width]*layout_size[:width]).floor, 
+              (g[:height]*layout_size[:height]).floor,
+              :x => (g[:x]*layout_size[:width]).floor, 
+              :y => (g[:y]*layout_size[:height]).floor,
+              layer => g[:layer]
+            )
+          end
         end
       end
     end
