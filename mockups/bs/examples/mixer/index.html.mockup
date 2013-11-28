@@ -22,9 +22,11 @@
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
+
   </head>
 
   <body>
+    <span class="glyphicon glyphicon-search"></span>
     <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -37,256 +39,688 @@
           <a class="navbar-brand" href="#">Mixer</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
+          <form class="navbar-form navbar-right" action="/app/stop" method="post">
+            <button type="submit" class="btn btn-danger btn-sm">Stop</button>
+          </form>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="col-sm-8">
+    <div class="container">
+      <div class="col-md-6">
         <div class="page-header">
-          <h1>Streams</h1>
+          <h1>Input streams</h1>
         </div>
-        <div class="row-fluid">
-          <div class="col-sm-4">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title">Stream 1</h3>
+        <!--New Stream-->
+        <div class="col-md-12">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Stream ID
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <strong>Original Size</strong>
+                </div>
+                <div class="col-md-4">
+                  1280 x 720
+                </div>
               </div>
-              <div class="panel-body">
-                <table class="table table-condensed">
-                  <tbody>
-                    <tr>
-                      <td><strong>Original Size</strong></td>
-                      <td>1024x436</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Current Size</strong></td>
-                      <td>1280x720</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Position</strong></td>
-                      <td>0x0</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Layer</strong></td>
-                      <td>0</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div>
-                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                  <button type="submit" class="btn pull-right btn-warning btn-sm">Disable</button>
+                <!--CROPS-->
+              <div class = "row">&nbsp;</div>
+              <div class="panel-group" id="accordion">
+                <!--CROP-->
+                <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Crop 1212313
+                      </a>
+                      <div class="btn-group pull-right">
+                        <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                          <button type="submit" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </button>
+                        </form>
+                      </div>
+                      <div class="btn-group pull-right">
+                        <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                          <button type="submit" class="btn btn-warning btn-xs ">
+                            <span class="glyphicon glyphicon-eye-close"></span>
+                          </button>
+                        </form>
+                      </div>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class = "row">
+                        <form class="form" role="form" action="/app/streams/add" method="post">
+                          <div class="col-md-12">
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>size</span>
+                                  <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                                  <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Crop<br>position</span>
+                                  <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                                  <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" value=1>
+                                </div>
+                              </div>
+                            </div>
+                            <div class = "row">&nbsp;</div>
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>size</span>
+                                  <input class="form-control input-sm" name="dst_w" id="dst_w" value=300>
+                                  <input class="form-control input-sm" name="dst_h" id="dst_h" value=300>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layout<br>position</span>
+                                  <input class="form-control input-sm" name="dst_x" id="dst_x" value=100>
+                                  <input class="form-control input-sm" name="dst_y" id="dst_y" value=100>
+                                </div>
+                              </div>
+                              <div class="col-md-2 col-md-offset-2">
+                                <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--CROP-->
+                <div class="panel panel-warning">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        Crop 1212313
+                      </a>
+                      <div class="btn-group pull-right">
+                        <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                          <button type="submit" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </button>
+                        </form>
+                      </div>
+                      <div class="btn-group pull-right">
+                        <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                          <button type="submit" class="btn btn-success btn-xs ">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                          </button>
+                        </form>
+                      </div>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <form class="form" role="form" action="/app/streams/add" method="post">
+                        <div class = "row">
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>size</span>
+                              <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                              <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                            </div>
+                          </div>
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>position</span>
+                              <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                              <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                            </div>
+                          </div>
+                        </div>
+                        <div class = "row">&nbsp;</div>
+                        <div class = "row">
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Layout<br>size</span>
+                              <input class="form-control input-sm" name="dst_w" id="dst_w" value=300>
+                              <input class="form-control input-sm" name="dst_h" id="dst_h" value=300>
+                            </div>
+                          </div>
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Layout<br>position</span>
+                              <input class="form-control input-sm" name="dst_x" id="dst_x" value=100>
+                              <input class="form-control input-sm" name="dst_y" id="dst_y" value=100>
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!--CROP INPUT FORM-->
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        Add new crop
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <form class="form" role="form" action="/app/streams/add" method="post">
+                        <div class = "row">
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>size</span>
+                              <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Crop width">
+                              <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Layout x position">
+                            </div>
+                          </div>
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Crop<br>position</span>
+                              <input class="form-control input-sm" name="c_x" id="c_x" placeholder="Layout x position">
+                              <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Layout x position">
+                            </div>
+                          </div>
+                        </div>
+                        <div class = "row">&nbsp;</div>
+                        <div class = "row">
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Layout<br>size</span>
+                              <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Layout x position">
+                              <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Layout x position">
+                            </div>
+                          </div>
+                          <div class="col-md-5">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Layout<br>position</span>
+                              <input class="form-control input-sm" name="dst_x" id="dst_x" placeholder="Layout x position">
+                              <input class="form-control input-sm" name="dst_y" id="dst_y" placeholder="Layout x position">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
-            <div class="panel panel-warning">
-              <div class="panel-heading">
-                <h3 class="panel-title">Stream 2</h3>
-              </div>
+        </div>
+
+        <div class="col-md-12"> 
+        <!--STREAM GROUP-->
+        <div class="panel-group" id="o">
+        <!--New Stream-->
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#o" href="#cOne2">
+                  Stream ID
+                </a>
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
+            </div>
+            <div id="cOne2" class="panel-collapse collapse">
               <div class="panel-body">
-                <table class="table table-condensed">
-                  <tbody>
-                    <tr>
-                      <td><strong>Original Size</strong></td>
-                      <td>1280x720</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Current Size</strong></td>
-                      <td>640x360</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Position</strong></td>
-                      <td>300x100</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Layer</strong></td>
-                      <td>1</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div>
-                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                  <button type="submit" class="btn pull-right btn-success btn-sm">Enable</button>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Original Size</strong>
+                  </div>
+                  <div class="col-md-4">
+                    1280 x 720
+                  </div>
+                </div>
+                <!--CROPS-->
+                <div class = "row">&nbsp;</div>
+                <div class="panel-group" id="accordion1">
+
+                <!--CROP INPUT FORM-->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapseNew">
+                          Add new crop
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseNew" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <form class="form" role="form" action="/app/streams/add" method="post">
+                          <div class = "row">
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Crop<br>size</span>
+                                <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                                <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                              </div>
+                            </div>
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Crop<br>position</span>
+                                <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                                <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                              </div>
+                            </div>
+                          </div>
+                          <div class = "row">&nbsp;</div>
+                          <div class = "row">
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Layout<br>size</span>
+                                <input class="form-control input-sm" name="dst_w" id="dst_w" value=300>
+                                <input class="form-control input-sm" name="dst_h" id="dst_h" value=300>
+                              </div>
+                            </div>
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Layout<br>position</span>
+                                <input class="form-control input-sm" name="dst_x" id="dst_x" value=100>
+                                <input class="form-control input-sm" name="dst_y" id="dst_y" value=100>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div><!-- /.col-sm-4 -->
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Stream 3</h3>
-              </div>
+          </div>
+
+        <!--New Stream-->
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#o" href="#cOne1">
+                  Stream ID
+                </a>
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
+            </div>
+            <div id="cOne1" class="panel-collapse collapse in">
               <div class="panel-body">
-
-                <form class="form" role="form">
-                  <div class="form-group">
-                    <label for="width">Original Width</label>
-                    <input type="number" class="form-control input-sm" id="width" placeholder="Original Width">
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Original Size</strong>
                   </div>
-                  <div class="form-group">
-                    <label for="height">Original Height</label>
-                    <input type="number" class="form-control input-sm" id="height" placeholder="Original Height">
+                  <div class="col-md-4">
+                    1280 x 720
                   </div>
-                  <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                </form>
+                </div>
+                <!--CROPS-->
+                <div class = "row">&nbsp;</div>
+                <div class="panel-group" id="accordion2">
 
+                  <!--CROP INPUT FORM-->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseNew1">
+                          Add new crop
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseNew1" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <form class="form" role="form" action="/app/streams/add" method="post">
+                          <div class = "row">
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Crop<br>size</span>
+                                <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                                <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                              </div>
+                            </div>
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Crop<br>position</span>
+                                <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                                <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                              </div>
+                            </div>
+                          </div>
+                          <div class = "row">&nbsp;</div>
+                          <div class = "row">
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Layout<br>size</span>
+                                <input class="form-control input-sm" name="dst_w" id="dst_w" value=300>
+                                <input class="form-control input-sm" name="dst_h" id="dst_h" value=300>
+                              </div>
+                            </div>
+                            <div class="col-md-5">
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-addon">Layout<br>position</span>
+                                <input class="form-control input-sm" name="dst_x" id="dst_x" value=100>
+                                <input class="form-control input-sm" name="dst_y" id="dst_y" value=100>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row-fluid">
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Stream 3</h3>
-              </div>
-              <div class="panel-body">
 
-                <form class="form" role="form">
-                  <div class="form-group">
-                    <label for="width">Original Width</label>
-                    <input type="number" class="form-control input-sm" id="width" placeholder="Original Width">
-                  </div>
-                  <div class="form-group">
-                    <label for="height">Original Height</label>
-                    <input type="number" class="form-control input-sm" id="height" placeholder="Original Height">
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                </form>
-              </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Add new input stream
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-primary btn-xs">
+                      <span class="glyphicon glyphicon-plus-sign"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
             </div>
-          </div> <!-- class="col-sm-4" -->
           </div>
-          <div class="row-fluid">
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Stream 3</h3>
-              </div>
-              <div class="panel-body">
+        </div>
+        </div>
+      </div>
 
-                <form class="form" role="form">
-                  <div class="form-group">
-                    <label for="width">Original Width</label>
-                    <input type="number" class="form-control input-sm" id="width" placeholder="Original Width">
+      <!--OUTPUT STREAMS-->
+      <div class="col-md-6">
+        <div class="page-header">
+          <h1>Output Streams</h1>
+        </div>
+
+        <div class="panel-group" id="output11">
+          <!--OUTPUT STREAM -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#output11" href="#collapseOne3">
+                  Stream ID
+                </a>
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
+            </div>
+            <div id="collapseOne3" class="panel-collapse collapse in">
+              <div class="panel-body">
+              <!--MODIFY OUTPUT STREAM -->
+                <div class = "row">
+                  <form class="form" role="form" action="/app/streams/add" method="post">
+                    <div class="col-md-12">
+                      <div class = "row">
+                        <div class="col-md-3">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Crop<br>size</span>
+                            <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                            <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Crop<br>position</span>
+                            <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                            <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Output<br>size</span>
+                            <input class="form-control input-sm" name="dst_w" id="dst_w" value=400>
+                            <input class="form-control input-sm" name="dst_h" id="dst_h" value=400>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="submit" class="btn btn-primary">Apply</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <br>
+                <!--Destinations -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" href="#collapseTwo3">
+                        Destinations
+                      </a>
+                    </h4>
                   </div>
-                  <div class="form-group">
-                    <label for="height">Original Height</label>
-                    <input type="number" class="form-control input-sm" id="height" placeholder="Original Height">
+                  <div id="collapseTwo3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <table class="table table-condensed">
+                        <tr>
+                          <th>IP</th>
+                          <th>Port</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td>192.168.10.217</td>
+                          <td>8000</td>
+                          <td> 
+                            <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                              <button type="submit" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>192.168.10.219</td>
+                          <td>8000</td>
+                          <td> 
+                            <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                              <button type="submit" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                        <tr>
+                          <form class="form" role="form" action="/app/destinations/add" method="post">
+                          <td>
+                            <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+                          </td>
+                          <td>
+                            <input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                          </td>
+                          <td>
+                            <button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+                          </td>
+                          </form>
+                        </tr>
+                      </table>
+                    </div>
                   </div>
-                  <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                </form>
+                </div>
               </div>
             </div>
-          </div> <!-- class="col-sm-4" -->
+          </div>
+
+          <!--OUTPUT STREAM -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#output11" href="#collapseOne34">
+                  Stream ID
+                </a>
+                <div class="btn-group pull-right">
+                  <form class="form" action="/app/streams/{{ stream.id }}/disable" method="post">
+                    <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </form>
+                </div>
+              </h3>
+            </div>
+            <div id="collapseOne34" class="panel-collapse collapse in">
+              <div class="panel-body">
+              <!--MODIFY OUTPUT STREAM -->
+                <div class = "row">
+                  <form class="form" role="form" action="/app/streams/add" method="post">
+                    <div class="col-md-12">
+                      <div class = "row">
+                        <div class="col-md-3">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Crop<br>size</span>
+                            <input class="form-control input-sm" name="c_w" id="c_w" value=300>
+                            <input class="form-control input-sm" name="c_h" id="c_h" value=300>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Crop<br>position</span>
+                            <input class="form-control input-sm" name="c_x" id="c_x" value=100>
+                            <input class="form-control input-sm" name="c_y" id="c_y" value=100>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Output<br>size</span>
+                            <input class="form-control input-sm" name="dst_w" id="dst_w" value=400>
+                            <input class="form-control input-sm" name="dst_h" id="dst_h" value=400>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="submit" class="btn btn-primary">Apply</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <br>
+                <!--Destinations -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" href="#collapseTwo34">
+                        Destinations
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo34" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <table class="table table-condensed">
+                        <tr>
+                          <th>IP</th>
+                          <th>Port</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <form class="form" role="form" action="/app/destinations/add" method="post">
+                          <td>
+                            <input type="text" class="form-control input-sm" name="ip" id="ip" placeholder="IP">
+                          </td>
+                          <td>
+                            <input type="number" class="form-control input-sm" name="port" id="port" placeholder="Port">
+                          </td>
+                          <td>
+                            <button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
+                          </td>
+                          </form>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-sm-4">
-        <div class="page-header">
-          <h1>Destinations</h1>
-        </div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-          <div class="panel-heading">Current Destinations</div>
-
-          <div class="panel-body">
-              <!-- Table -->
-              <table class="table table-hover">
-                <tr>
-                  <th>ID</th>
-                  <th>IP</th>
-                  <th>Port</th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>192.168.10.134</td>
-                  <td>5004</td>
-                  <td>
-                    <button type="button" class="btn btn-danger btn-xs">Remove</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>192.168.10.217</td>
-                  <td>5004</td>
-                  <td>
-                    <button type="button" class="btn btn-danger btn-xs">Remove</button>
-                  </td>
-                </tr>
-              </table>
-
-              <form class="form-inline" role="form">
-                <div class="form-group col-lg-6">
-                  <label class="sr-only" for="ip">IP</label>
-                  <input type="text" class="form-control input-sm" id="ip" placeholder="IP">
-                </div>
-                <div class="form-group col-lg-3">
-                  <label class="sr-only" for="port">Port</label>
-                  <input type="number" class="form-control input-sm" id="port" placeholder="Port">
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm">Add</button>
-              </form>
-            </div>
-
-          </div>
-
-          </div>
-          </div>
-      
-      <div class="col-sm-4">
-        <div class="page-header">
-          <h1>Grids</h1>
-        </div>
-        <div class="panel panel-default container">
+      <div class="panel panel-default container">
         <div class="panel-body">
-          <div class="row btn-group">
-            <button type="button" class="btn active btn-default">
-              <img src="image/22.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-            <button type="button" class="btn btn-default">
-              <img src="image/32.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-            <button type="button" class="btn btn-default">
-              <img src="image/33.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-          </div>
-          <div class="row btn-group">
-            <button type="button" class="btn btn-default">
-              <img src="image/upleft.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-            <button type="button" class="btn btn-default">
-              <img src="image/downright.jpeg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-            <button type="button" class="btn btn-default">
-              <img src="image/lena.jpg" alt="Lena" height="80" width="80" class="img-rounded">
-            </button>
-          </div>
+          <div class="row btn-group" data-toggle="buttons">
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
+            <label class="btn btn-default" onclick="set_grid({{i}})">
+              <input type="radio" name="options" id="option1">
+              <img  src="image/{{i}}.jpeg" alt="grid-{{i}}" class="img-rounded" width="60" height="60">
+            </label>
           </div>
         </div>
-
       </div>
+      
     </div> <!-- /container -->
+
+
+
+        
+
 
 
     <!-- Bootstrap core JavaScript

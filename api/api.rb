@@ -1,3 +1,26 @@
+#
+#  RUBYMIXER - A management ruby interface for MIXER 
+#  Copyright (C) 2013  Fundació i2CAT, Internet i Innovació digital a Catalunya
+#
+#  This file is part of thin RUBYMIXER.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#  Authors:  Marc Palau <marc.palau@i2cat.net>,
+#            Ignacio Contreras <ignacio.contreras@i2cat.net>
+#   
+
 require 'rubygems'
 require 'bundler/setup'
 
@@ -53,21 +76,40 @@ class MixerAPI < Sinatra::Base
     end
 
     if started
-      streams = []
-      destinations = []
       
-      error_html do
-        settings.mixer.streams.each do |s|
-          streams << k2s[s]
+      #Input streams json parsing
+      i_streams = settings.mixer.input_streams
+      input_streams = []
+      
+      i_streams.each do |s|
+        crops = []
+        s[:crops].each do |c|
+          crops << k2s[c]
         end
-        settings.mixer.destinations.each do |d|
-          destinations << k2s[d]
-        end
+        s[:crops] = crops
+        input_streams << k2s[s]
       end
 
+      #Output stream json parsing
+      o_stream = settings.mixer.output_stream
+      output_stream = []
+      o_crops = []
+
+      o_stream[:crops].each do |c|
+        dst = []
+        c[:destinations].each do |d|
+          dst << k2s[d]
+        end
+        c[:destinations] = dst
+        o_crops << k2s[c]
+      end
+
+      o_stream[:crops] = o_crops
+      output_stream << k2s[o_stream]
+
       liquid :index, :locals => {
-        "streams" => streams,
-        "destinations" => destinations,
+        "input_streams" => input_streams,
+        "output_streams" => output_stream,
         "grid" => settings.grid
       }
     else
@@ -102,18 +144,10 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/streams/:id/disable' do
+  post '/app/streams/add' do
     content_type :html
     error_html do
-      settings.mixer.disable_stream(params[:id].to_i)
-    end
-    redirect '/app'
-  end
-
-  post '/app/streams/:id/enable' do
-    content_type :html
-    error_html do
-      settings.mixer.enable_stream(params[:id].to_i)
+      settings.mixer.add_stream
       settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
@@ -127,43 +161,132 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/streams/add' do
+  post '/app/streams/:id/crops/add' do
     content_type :html
-    if params[:size]
-      width, height = params[:size].downcase.split('x')
-    else
-      width = params[:width]
-      height = params[:height]
-    end      
-    width = width.to_i
-    height = height.to_i
-
-    options = {
-      :new_w => (params[:new_w] || width).to_i,
-      :new_h => (params[:new_h] || height).to_i,
-      :x => (params[:x] || 0).to_i,
-      :y => (params[:y] || 0).to_i,
-      :layer => (params[:layer] || 1).to_i
-    }
     error_html do
-      settings.mixer.add_stream(width, height, options)
+      settings.mixer.add_crop_to_stream(
+                        params[:id].to_i,
+                        params[:c_w].to_i,
+                        params[:c_h].to_i,
+                        params[:c_x].to_i,
+                        params[:c_y].to_i,
+                        params[:dst_w].to_i,
+                        params[:dst_h].to_i,
+                        params[:dst_x].to_i,
+                        params[:dst_y].to_i,
+                        params[:layer].to_i
+                    )
       settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
 
-  post '/app/destinations/add' do
+  post '/app/streams/:id/crops/:c_id/modify' do
     content_type :html
     error_html do
-      settings.mixer.add_destination(params[:ip], params[:port].to_i)
+      settings.mixer.modify_crop_from_stream(
+                params[:id].to_i,
+                params[:c_id].to_i,
+                params[:c_w].to_i,
+                params[:c_h].to_i,
+                params[:c_x].to_i,
+                params[:c_y].to_i
+              )
+
+      settings.mixer.modify_crop_resizing_from_stream(
+                params[:id].to_i,
+                params[:c_id].to_i,
+                params[:dst_w].to_i,
+                params[:dst_h].to_i,
+                params[:dst_x].to_i,
+                params[:dst_y].to_i,
+                params[:layer].to_i
+              )
+
+      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
 
-  post '/app/destinations/:id/remove' do
+  post '/app/streams/:id/crops/:c_id/enable' do
     content_type :html
     error_html do
-      settings.mixer.remove_destination(params[:id].to_i)
+      settings.mixer.enable_crop_from_stream(params[:id].to_i, params[:c_id].to_i )
+    end
+    redirect '/app'
+  end
+
+  post '/app/streams/:id/crops/:c_id/disable' do
+    content_type :html
+    error_html do
+      settings.mixer.disable_crop_from_stream(params[:id].to_i, params[:c_id].to_i )
+    end
+    redirect '/app'
+  end
+
+  post '/app/streams/:id/crops/:c_id/remove' do
+    content_type :html
+    error_html do
+      settings.mixer.remove_crop_from_stream(params[:id].to_i, params[:c_id].to_i )
+    end
+    redirect '/app'
+  end
+
+  post '/app/output_stream/crops/add' do
+    content_type :html
+    error_html do
+      settings.mixer.add_crop_to_layout(
+                      params[:c_w].to_i,
+                      params[:c_h].to_i,
+                      params[:c_x].to_i,
+                      params[:c_y].to_i,
+                      params[:dst_w].to_i,
+                      params[:dst_h].to_i
+                    )
+    end
+    redirect '/app'
+  end
+
+  post '/app/output_stream/crops/:id/modify' do
+    content_type :html
+    error_html do
+      settings.mixer.modify_crop_from_layout(
+                      params[:id].to_i,
+                      params[:c_w].to_i,
+                      params[:c_h].to_i,
+                      params[:c_x].to_i,
+                      params[:c_y].to_i
+                    )
+
+      settings.mixer.modify_crop_resizing_from_layout(
+                      params[:id].to_i,
+                      params[:dst_w].to_i,
+                      params[:dst_h].to_i,
+                    )
+    end
+    redirect '/app'
+  end
+
+  post '/app/output_stream/crops/:id/destinations/add' do
+    content_type :html
+    error_html do
+      settings.mixer.add_destination(params[:id].to_i, params[:ip], params[:port].to_i)
+    end
+    redirect '/app'
+  end
+
+  post '/app/output_stream/crops/:id/destinations/:d_id/remove' do
+    content_type :html
+    error_html do
+      settings.mixer.remove_destination(params[:d_id].to_i)
+    end
+    redirect '/app'
+  end
+
+  post '/app/output_stream/crops/:id/remove' do
+    content_type :html
+    error_html do
+      settings.mixer.remove_crop_from_layout(params[:id].to_i)
     end
     redirect '/app'
   end
