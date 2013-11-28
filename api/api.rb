@@ -76,6 +76,8 @@ class MixerAPI < Sinatra::Base
     end
 
     if started
+      
+      #Input streams json parsing
       i_streams = settings.mixer.input_streams
       input_streams = []
       
@@ -88,11 +90,17 @@ class MixerAPI < Sinatra::Base
         input_streams << k2s[s]
       end
 
+      #Output stream json parsing
       o_stream = settings.mixer.output_stream
       output_stream = []
       o_crops = []
-      
+
       o_stream[:crops].each do |c|
+        dst = []
+        c[:destinations].each do |d|
+          dst << k2s[d]
+        end
+        c[:destinations] = dst
         o_crops << k2s[c]
       end
 
