@@ -69,14 +69,21 @@ module RMixer
         raise MixerError, "Invalid grid id"
       end
 
+      crops = []
       input_streams.each do |s|
-        s[:crops].zip(grid).each do |c, g|
+        s[:crops].each do |c|
+          c[:str_id] = s[:id]
+          crops << c
+        end
+      end
+
+        crops.zip(grid).each do |c, g|
           if g.nil?
-            disable_crop_from_stream(s[:id], c[:id])
+            disable_crop_from_stream(c[:str_id], c[:id])
           elsif c.nil?
           else
             modify_crop_resizing_from_stream(
-              s[:id],
+              c[:str_id],
               c[:id], 
               (g[:width]*layout_size[:width]).floor, 
               (g[:height]*layout_size[:height]).floor,
@@ -86,7 +93,6 @@ module RMixer
             )
           end
         end
-      end
     end
 
     def method_missing(name, *args, &block)
