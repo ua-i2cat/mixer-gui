@@ -70,7 +70,7 @@ module RMixer
       end
 
       input_streams.each do |s|
-        s.crops.zip(grid).each do |c, g|
+        s[:crops].zip(grid).each do |c, g|
           if g.nil?
             disable_crop_from_stream(s[:id], c[:id])
           elsif c.nil?
@@ -80,9 +80,9 @@ module RMixer
               c[:id], 
               (g[:width]*layout_size[:width]).floor, 
               (g[:height]*layout_size[:height]).floor,
-              :x => (g[:x]*layout_size[:width]).floor, 
-              :y => (g[:y]*layout_size[:height]).floor,
-              layer => g[:layer]
+              (g[:x]*layout_size[:width]).floor, 
+              (g[:y]*layout_size[:height]).floor,
+              g[:layer]
             )
           end
         end

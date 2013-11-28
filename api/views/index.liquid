@@ -80,7 +80,7 @@
                   <div class = "row">&nbsp;</div>
                   <div class="panel-group" id="crops_{{ stream.id }}">  <!--CROPS-->
                   {% for crop in stream.crops %}
-                    {% if crop.active == 1 %}
+                    {% if crop.state == 1 %}
                     <div class="panel panel-success">
                     {% else %}
                     <div class="panel panel-warning">
@@ -98,7 +98,7 @@
                             </form>
                           </div>
                           <div class="btn-group pull-right">
-                            {% if crop.active == 1 %}
+                            {% if crop.state == 1 %}
                             <form class="form" action="/app/streams/{{ stream.id }}/crops/{{ crop.id }}/disable" method="post">
                               <button type="submit" class="btn btn-warning btn-xs ">
                                 <span class="glyphicon glyphicon-eye-close"></span>
@@ -167,7 +167,7 @@
                     <div class="panel panel-default"> <!--New crop form-->
                       <div class="panel-heading">
                         <h4 class="panel-title">
-                          <a data-toggle="collapse" data-parent="##crops_{{ stream.id }}" href="#stream_{{ stream.id }}_crop_new">
+                          <a data-toggle="collapse" data-parent="#crops_{{ stream.id }}" href="#stream_{{ stream.id }}_crop_new">
                             Add new crop
                           </a>
                         </h4>
@@ -176,38 +176,44 @@
                         <div class="panel-body">
                           <form class="form" role="form" action="/app/streams/{{ stream.id }}/crops/add" method="post">
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>size</span>
                                   <input class="form-control input-sm" name="c_w" id="c_w" placeholder="Crop width">
                                   <input class="form-control input-sm" name="c_h" id="c_h" placeholder="Crop height">
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Crop<br>position</span>
                                   <input class="form-control input-sm" name="c_x" id="c_x" placeholder="Crop x pos">
                                   <input class="form-control input-sm" name="c_y" id="c_y" placeholder="Crop y pos">
                                 </div>
                               </div>
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Layer</span>
+                                  <input class="form-control input-sm" name="layer" id="layer" placeholder="Layer">
+                                </div>
+                              </div>
                             </div>
                             <div class = "row">&nbsp;</div>
                             <div class = "row">
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>size</span>
                                   <input class="form-control input-sm" name="dst_w" id="dst_w" placeholder="Layout width">
                                   <input class="form-control input-sm" name="dst_h" id="dst_h" placeholder="Layout height">
                                 </div>
                               </div>
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                 <div class="input-group input-group-sm">
                                   <span class="input-group-addon">Layout<br>position</span>
                                   <input class="form-control input-sm" name="dst_x" id="dst_x" placeholder="Layout x pos.">
                                   <input class="form-control input-sm" name="dst_y" id="dst_y" placeholder="Layout y pos.">
                                 </div>
                               </div>
-                              <div class="col-md-2">
+                              <div class="col-md-2 col-md-offset-2">
                                 <button type="submit" class="btn btn-primary btn-sm">Add</button>
                               </div>
                             </div>

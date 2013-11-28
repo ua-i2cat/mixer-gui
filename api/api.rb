@@ -169,7 +169,12 @@ class MixerAPI < Sinatra::Base
                         params[:c_w].to_i,
                         params[:c_h].to_i,
                         params[:c_x].to_i,
-                        params[:c_y].to_i
+                        params[:c_y].to_i,
+                        params[:dst_w].to_i,
+                        params[:dst_h].to_i,
+                        params[:dst_x].to_i,
+                        params[:dst_y].to_i,
+                        params[:layer].to_i
                     )
       settings.mixer.set_grid(settings.grid)
     end

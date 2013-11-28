@@ -79,18 +79,18 @@ module RMixer
       get_response("remove_stream", params)
     end
 
-    def add_crop_to_stream(id, crop_width, crop_height, crop_x, crop_y, options = {})
+    def add_crop_to_stream(id, crop_width, crop_height, crop_x, crop_y, rsz_width, rsz_height, rsz_x, rsz_y, layer)
       params = {
         :id => id.to_i,
         :crop_width => crop_width.to_i,
         :crop_height => crop_height.to_i,
         :crop_x => crop_x.to_i,
         :crop_y => crop_y.to_i,
-        :layer => (options[:layer] || 1).to_i,
-        :rsz_width => (options[:rsz_width] || crop_width).to_i,
-        :rsz_height => (options[:rsz_height] || crop_height).to_i,
-        :rsz_x => (options[:rsz_x] || x).to_i,
-        :rsz_y => (options[:rsz_y] || y).to_i
+        :rsz_width => rsz_width.to_i,
+        :rsz_height => rsz_height.to_i,
+        :rsz_x => rsz_x.to_i,
+        :rsz_y => rsz_y.to_i,
+        :layer => layer.to_i
       }
       get_response("add_crop_to_stream", params)
     end
