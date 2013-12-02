@@ -77,24 +77,49 @@ module RMixer
         end
       end
 
-        crops.zip(grid).each do |c, g|
-          if g.nil?
-            disable_crop_from_stream(c[:str_id], c[:id])
-          elsif c.nil?
-          else
-            modify_crop_resizing_from_stream(
-              c[:str_id],
-              c[:id], 
-              (g[:width]*layout_size[:width]).floor, 
-              (g[:height]*layout_size[:height]).floor,
-              (g[:x]*layout_size[:width]).floor, 
-              (g[:y]*layout_size[:height]).floor,
-              g[:layer]
-            )
-            enable_crop_from_stream(c[:str_id], c[:id])
-          end
+      crops.zip(grid).each do |c, g|
+        if g.nil?
+          disable_crop_from_stream(c[:str_id], c[:id])
+        elsif c.nil?
+        else
+          modify_crop_resizing_from_stream(
+            c[:str_id],
+            c[:id], 
+            (g[:width]*layout_size[:width]).floor, 
+            (g[:height]*layout_size[:height]).floor,
+            (g[:x]*layout_size[:width]).floor, 
+            (g[:y]*layout_size[:height]).floor,
+            g[:layer]
+          )
+          enable_crop_from_stream(c[:str_id], c[:id])
         end
+      end
     end
+
+    def set_output_grid(id)
+      layout_size = get_layout_size
+      grid = case id
+      when 0
+        return
+      when 1 #2x2
+        calc_regular_grid(2,2)
+      else
+        raise MixerError, "Invalid grid id"
+      end
+
+      grid.each do |g|
+        add_crop_to_layout(
+          (g[:width]*layout_size[:width]).floor, 
+          (g[:height]*layout_size[:height]).floor,
+          (g[:x]*layout_size[:width]).floor, 
+          (g[:y]*layout_size[:height]).floor,
+          (g[:width]*layout_size[:width]).floor, 
+          (g[:height]*layout_size[:height]).floor, 
+        )
+      end
+    end
+
+
 
     def method_missing(name, *args, &block)
       if @conn.respond_to?(name)

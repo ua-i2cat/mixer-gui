@@ -34,6 +34,7 @@ class MixerAPI < Sinatra::Base
   set :port, 7777
   set :mixer, RMixer::Mixer.new(settings.ip, settings.port)
   set :grid, 0
+  set :output_grid, 0
 
   def error_json
     begin
@@ -110,7 +111,8 @@ class MixerAPI < Sinatra::Base
       liquid :index, :locals => {
         "input_streams" => input_streams,
         "output_streams" => output_stream,
-        "grid" => settings.grid
+        "grid" => settings.grid,
+        "output_grid" => settings.output_grid
       }
     else
       liquid :before
@@ -141,6 +143,8 @@ class MixerAPI < Sinatra::Base
     error_html do
       settings.mixer.stop
     end
+    settings.grid = 0
+    settings.output_grid = 0
     redirect '/app'
   end
 
@@ -298,6 +302,19 @@ class MixerAPI < Sinatra::Base
     end
     settings.grid = params[:id].to_i
     redirect '/app'
+  end
+
+  post '/app/output_grid' do
+    content_type :html
+    if settings.output_grid != 0
+      redirect '/app'
+    else
+      error_html do
+        settings.mixer.set_output_grid(params[:id].to_i)
+      end
+      settings.output_grid = params[:id].to_i
+      redirect '/app'
+    end
   end
 
   # JSON API Methods
