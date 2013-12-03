@@ -152,7 +152,6 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       settings.mixer.add_stream
-      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
@@ -319,164 +318,63 @@ class MixerAPI < Sinatra::Base
 
   # JSON API Methods
 
-  post '/start' do
-    content_type :json
+  
 
-    if params.include?(:size)
-      width, height = options[:size].downcase.split('x')
-      width = width.to_i
-      height = height.to_i
-    end
-
-    options = {
-      :width => width,
-      :height => height,
-      :max_streams => params[:max_streams].to_i,
-      :input_port => params[:input_port].to_i
-      }
-
-    error_json do
-      settings.mixer.start(params).to_json
-    end
-  end
-
-  post '/streams/add' do
-    content_type :json
-    width, height = params[:size].downcase.split('x')
-    width = width.to_i
-    height = height.to_i
-    options = {
-      :new_w => (params[:new_w] || width).to_i,
-      :new_h => (params[:new_h] || height).to_i,
-      :x => (params[:x] || 0).to_i,
-      :y => (params[:y] || 0).to_i,
-      :layer => (params[:layer] || 1).to_i
-    }
-    error_json do
-      settings.mixer.add_stream(width, height, options).to_json
-    end
-  end
+  # JSON API Methods for MCU
 
   post '/streams/add_mcu' do
     content_type :json
-    width = 465
-    height = 544
-    options = {
-      :new_w => (params[:new_w] || width).to_i,
-      :new_h => (params[:new_h] || height).to_i,
-      :x => (params[:x] || 0).to_i,
-      :y => (params[:y] || 0).to_i,
-      :layer => (params[:layer] || 1).to_i
-    }
+    ret = []
     error_json do
-      settings.mixer.add_stream(width, height, options).to_json
+      ret = settings.mixer.add_stream
+      n = settings.mixer.input_streams.length
+      case n
+      when 0 .. 4
+        settings.grid = 1 #2x2
+      when 5 .. 6 
+        settings.grid = 2 #3x2
+      when 7 .. 9 
+        settings.grid = 3 #3x3
+      else
+        raise MixerError, "Invalid grid id"
+      end
+    settings.mixer.set_grid(settings.grid)
     end
-  end
-
-  post '/streams/:id/remove' do
-    content_type :json
-    error_json do
-      settings.mixer.remove_stream(params[:id].to_i).to_json
-    end
+    return ret.to_json
   end
 
   post '/streams/:id/remove_mcu' do
     content_type :json
     error_json do
       settings.mixer.remove_stream(params[:id].to_i).to_json
+      n = settings.mixer.input_streams.length
+      case n
+      when 0 .. 4
+        settings.grid = 1 #2x2
+      when 5 .. 6 
+        settings.grid = 2 #3x2
+      when 7 .. 9 
+        settings.grid = 3 #3x3
+      else
+        raise MixerError, "Invalid grid id"
+      end
+      settings.mixer.set_grid(settings.grid)
     end
   end
 
-  get '/streams' do
+  post '/output_stream/add_destination_mcu' do
     content_type :json
     error_json do
-      settings.mixer.streams.to_json
+      o_stream = settings.mixer.output_stream
+      id = o_stream[:crops].first[:id].to_i
+      settings.mixer.add_destination(id, params[:ip], params[:port].to_i).to_json
     end
   end
 
-  get '/streams/:id' do
-    content_type :json
-    error_json do
-      settings.mixer.stream(params[:id].to_i).to_json
-    end
-  end
-
-  post '/streams/:id/enable' do
-    content_type :json
-    error_json do
-      settings.mixer.enable_stream(params[:id].to_i).to_json
-      settings.mixer.set_grid(settings.grid).to_json
-    end
-  end
-
-  post '/streams/:id/disable' do
-    content_type :json
-    error_json do
-      settings.mixer.disable_stream(params[:id].to_i).to_json
-    end
-  end
-
-  post '/streams/:id/modify' do
-    content_type :json
-
-    id = params[:id].to_i
-    width = params[:width].to_i
-    height = params[:height].to_i
-
-    keep_text = params[:keep_aspect_ratio].downcase
-    
-    options = {
-      :x => params[:x].to_i,
-      :y => params[:y].to_i,
-      :layer => params[:layer].to_i,
-      :keep_aspect_ratio => (keep_text == "true" || keep_text == "1")
-    }
-
-    error_json do
-      settings.mixer.modify_stream(id, width, height, options).to_json
-    end
-  end
-
-  get '/destinations' do
-    content_type :json
-    error_json do
-      settings.mixer.destinations.to_json
-    end
-  end
-
-  post '/destinations/add' do
-    content_type :json
-    error_json do
-      settings.mixer.add_destination(params[:ip], params[:port].to_i).to_json
-    end
-  end
-
-  get '/destinations/:id' do
-    content_type :json
-    error_json do
-      settings.mixer.destination(params[:id].to_i).to_json
-    end
-  end
-
-  post '/destinations/:id/remove' do
+  post '/output_stream/:id/remove_destination_mcu' do
     content_type :json
     error_json do
       settings.mixer.remove_destination(params[:id].to_i).to_json
-    end
-  end
-
-  post '/grid' do
-    content_type :json
-    error_html do
-      settings.mixer.set_grid(params[:id].to_i).to_json
-    end
-    settings.grid = params[:id].to_i
-  end
-
-  post '/stop' do
-    content_type :json
-    error_json do
-      settings.mixer.stop.to_json
     end
   end
 

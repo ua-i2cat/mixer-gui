@@ -91,9 +91,11 @@ module RMixer
             (g[:y]*layout_size[:height]).floor,
             g[:layer]
           )
-          enable_crop_from_stream(c[:str_id], c[:id])
+          #enable_crop_from_stream(c[:str_id], c[:id])
         end
       end
+
+      return nil
     end
 
     def set_output_grid(id)
