@@ -152,6 +152,7 @@ class MixerAPI < Sinatra::Base
     content_type :html
     error_html do
       settings.mixer.add_stream
+      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
