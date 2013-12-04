@@ -206,8 +206,6 @@ class MixerAPI < Sinatra::Base
                 params[:dst_y].to_i,
                 params[:layer].to_i
               )
-
-      settings.mixer.set_grid(settings.grid)
     end
     redirect '/app'
   end
