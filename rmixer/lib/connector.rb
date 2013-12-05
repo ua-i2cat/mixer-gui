@@ -233,6 +233,10 @@ module RMixer
       get_response("get_layout_size")
     end
 
+    def get_stats
+      get_response("get_stats")
+    end
+
     def get_state
       get_response("get_state")
     end

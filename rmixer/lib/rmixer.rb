@@ -49,6 +49,10 @@ module RMixer
       get_output_stream[:output_stream]
     end
 
+    def stats
+      get_stats
+    end
+
     def set_grid(id)
       layout_size = get_layout_size
       grid = case id
