@@ -277,7 +277,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/output_stream/crops/:id/destinations/:d_id/remove' do
+  post '/app/outputs_stream/crops/:id/destinations/:d_id/remove' do
     content_type :html
     error_html do
       settings.mixer.remove_destination(params[:d_id].to_i)
@@ -285,7 +285,7 @@ class MixerAPI < Sinatra::Base
     redirect '/app'
   end
 
-  post '/app/output_stream/crops/:id/remove' do
+  post '/app/outputs/:id/remove' do
     content_type :html
     error_html do
       settings.mixer.remove_crop_from_layout(params[:id].to_i)
