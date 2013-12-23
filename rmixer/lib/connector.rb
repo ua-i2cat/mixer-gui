@@ -65,18 +65,18 @@ module RMixer
         :height => (height != 0) ? height : 720,
         :input_port => (options[:input_port] || 5004).to_i
       }
-      get_response("start_mixer", params)
+      send_and_wait("start", params, 0)
     end
 
     def add_stream
-      get_response("add_stream")
+      send_and_wait("add_source")
     end
 
     def remove_stream(id)
       params = {
         :id => id.to_i
       }
-      get_response("remove_stream", params)
+      send_and_wait("remove_source", params)
     end
 
     def add_crop_to_stream(id, crop_width, crop_height, crop_x, crop_y, rsz_width, rsz_height, rsz_x, rsz_y, layer)
@@ -92,7 +92,7 @@ module RMixer
         :rsz_y => rsz_y.to_i,
         :layer => layer.to_i
       }
-      get_response("add_crop_to_stream", params)
+      send_and_wait("add_crop_to_source", params)
     end
 
     def modify_crop_from_stream(stream_id, crop_id, width, height, x, y)
@@ -104,7 +104,7 @@ module RMixer
         :x => x.to_i,
         :y => y.to_i
       }
-      get_response("modify_crop_from_stream", params)
+      send_and_wait("modify_crop_from_source", params)
     end
 
     def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1)
@@ -117,7 +117,7 @@ module RMixer
         :y => y.to_i,
         :layer => layer.to_i
       }
-      get_response("modify_crop_resizing_from_stream", params)
+      send_and_wait("modify_crop_resizing_from_source", params)
     end
 
     def remove_crop_from_stream(stream_id, crop_id)
@@ -125,7 +125,7 @@ module RMixer
         :stream_id => stream_id.to_i,
         :crop_id => crop_id.to_i
       }
-      get_response("remove_crop_from_stream", params)
+      send_and_wait("remove_crop_from_source", params)
     end
 
     def add_crop_to_layout(width, height, x, y, output_width, output_height)
@@ -137,7 +137,7 @@ module RMixer
         :output_width => output_width.to_i,
         :output_height => output_height.to_i
       }
-      get_response("add_crop_to_layout", params)
+      send_and_wait("add_crop_to_layout", params)
     end
 
     def modify_crop_from_layout(crop_id, width, height, x, y)
@@ -148,7 +148,7 @@ module RMixer
         :x => x.to_i,
         :y => y.to_i
       }
-      get_response("modify_crop_from_layout", params)
+      send_and_wait("modify_crop_from_layout", params)
     end
 
     def modify_crop_resizing_from_layout(crop_id, width, height)
@@ -157,14 +157,14 @@ module RMixer
         :width => width.to_i,
         :height => height.to_i
       }
-      get_response("modify_crop_resizing_from_layout", params)
+      send_and_wait("modify_crop_resizing_from_layout", params)
     end
 
     def remove_crop_from_layout(crop_id)
       params = {
         :crop_id => crop_id.to_i
       }
-      get_response("remove_crop_from_layout", params)
+      send_and_wait("remove_crop_from_layout", params)
     end
 
     def enable_crop_from_stream(stream_id, crop_id)
@@ -172,7 +172,7 @@ module RMixer
         :stream_id => stream_id.to_i,
         :crop_id => crop_id.to_i
       }
-      get_response("enable_crop_from_stream", params)
+      send_and_wait("enable_crop_from_source", params)
     end
 
     def disable_crop_from_stream(stream_id, crop_id)
@@ -180,21 +180,7 @@ module RMixer
         :stream_id => stream_id.to_i,
         :crop_id => crop_id.to_i
       }
-      get_response("disable_crop_from_stream", params)
-    end
-
-    def disable_stream(id)
-      params = {
-        :id => id.to_i
-      }
-      get_response("disable_stream", params)
-    end
-
-    def enable_stream(id)
-      params = {
-        :id => id.to_i
-      }
-      get_response("enable_stream", params)
+      send_and_wait("disable_crop_from_source", params)
     end
 
     def add_destination(stream_id, ip, port)
@@ -203,42 +189,42 @@ module RMixer
         :ip => ip.to_s,
         :port => port.to_i
       }
-      get_response("add_destination", params)
+      send_and_wait("add_destination", params)
     end
 
     def remove_destination(id)
       params = {
         :id => id.to_i
       }
-      get_response("remove_destination", params)
+      send_and_wait("remove_destination", params)
     end
 
     def stop
-      get_response("stop_mixer")
+      send_and_wait("stop_mixer")
     end
 
     def exit
-      get_response("exit_mixer")
+      send_and_wait("exit_mixer")
     end
 
     def get_input_streams
-      get_response("get_streams")
+      send_and_wait("get_streams")
     end
 
     def get_output_stream
-      get_response("get_layout")
+      send_and_wait("get_layout")
     end
 
     def get_layout_size
-      get_response("get_layout_size")
+      send_and_wait("get_layout_size")
     end
 
     def get_stats
-      get_response("get_stats")
+      send_and_wait("get_stats")
     end
 
     def get_state
-      get_response("get_state")
+      send_and_wait("get_state")
     end
 
     # Method that composes the JSON request and sends it over TCP to the
@@ -267,17 +253,32 @@ module RMixer
     #   mixer = RMixer::Mixer.new "localhost", 7777
     #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })   
     #
-    def get_response(action, params = nil)
+
+    def send_and_wait(action, params = nil, delay = nil)
       request = {
         :action => action,
-        :params => params
+        :params => params,
+        :delay => delay
       }
       return request if @testing == :request
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      response = s.recv(1024) # TODO: max_len ?
+      puts request
+      response = s.recv(2048) # TODO: max_len ?
       s.close
       return JSON.parse(response, :symbolize_names => true)
+    end
+
+    def dont_wait(action, params = nil, delay = nil)
+      request = {
+        :action => action,
+        :params => params,
+        :delay => delay
+      }
+      return request if @testing == :request
+      s = TCPSocket.open(@host, @port)
+      s.print(request.to_json)
+      s.close
     end
 
   end
