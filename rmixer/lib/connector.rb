@@ -107,7 +107,7 @@ module RMixer
       send_and_wait("modify_crop_from_source", params)
     end
 
-    def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1)
+    def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1, delay = 0)
       params = {
         :stream_id => stream_id.to_i,
         :crop_id => crop_id.to_i,
@@ -117,7 +117,12 @@ module RMixer
         :y => y.to_i,
         :layer => layer.to_i
       }
-      send_and_wait("modify_crop_resizing_from_source", params)
+
+      if (delay != 0)
+        dont_wait("modify_crop_resizing_from_source", params, delay)
+      else 
+        send_and_wait("modify_crop_resizing_from_source", params, delay)
+      end
     end
 
     def remove_crop_from_stream(stream_id, crop_id)
@@ -227,6 +232,21 @@ module RMixer
       send_and_wait("get_state")
     end
 
+    def get_stream(id)
+      params = {
+        :id => id.to_i
+      }
+      send_and_wait("get_stream", params)
+    end
+
+    def get_crop_from_stream(stream_id, crop_id)
+      params = {
+        :stream_id => stream_id.to_i,
+        :crop_id => crop_id.to_i
+      }
+      send_and_wait("get_crop_from_stream", params)
+    end
+
     # Method that composes the JSON request and sends it over TCP to the
     # targetted remote mixer instance.
     #
@@ -254,7 +274,7 @@ module RMixer
     #   mixer.get_response("start_mixer", { :width => 1280, :height => 720 })   
     #
 
-    def send_and_wait(action, params = nil, delay = nil)
+    def send_and_wait(action, params = {}, delay = 0)
       request = {
         :action => action,
         :params => params,
@@ -269,7 +289,7 @@ module RMixer
       return JSON.parse(response, :symbolize_names => true)
     end
 
-    def dont_wait(action, params = nil, delay = nil)
+    def dont_wait(action, params = {}, delay = 0)
       request = {
         :action => action,
         :params => params,
@@ -278,7 +298,10 @@ module RMixer
       return request if @testing == :request
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
+      puts request
       s.close
+      response = {:error => nil}
+      return response
     end
 
   end

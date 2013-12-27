@@ -53,6 +53,81 @@ module RMixer
       get_stats
     end
 
+    def horitzontal(width, height, str_id, crop_id)
+      layout_size = get_layout_size
+      modify_crop_resizing_from_stream(str_id, crop_id, width, height, 0, 0, 10, 0)
+      x = 0
+      60.times do |d|
+        x += 64
+        if (x + width > layout_size[:width])
+          x = 0
+        end
+        modify_crop_resizing_from_stream(str_id, crop_id, width, height, x, 0, 10, d)
+      end
+    end
+
+    def slow_resizing(str_id, crop_id, width_percent, height_percent, seconds)
+      layout_size = get_layout_size
+      crop = get_crop_from_stream(str_id, crop_id)
+      final_width = crop[:dst_w] * width_percent
+      final_height = crop[:dst_h] * height_percent
+
+      if final_width + crop[:dst_x] > layout_size[:width]
+        final_width = layout_size[:width] - crop[:dst_x] 
+      end
+
+      if final_height + crop[:dst_y] > layout_size[:height]
+        final_height = layout_size[:height] - crop[:dst_y] 
+      end
+
+      it = seconds*10 #resize every 100 ms
+      width = crop[:dst_w]
+      height = crop[:dst_h]
+      
+      delta_w = ((final_width - width)/it).floor
+      delta_h = ((final_height - height)/it).floor
+
+      it.times do |d|
+        width += delta_w
+        height += delta_h
+        modify_crop_resizing_from_stream(str_id, crop_id, width, height, crop[:dst_x], crop[:dst_y], 10, d*100)
+      end
+
+    end
+
+    def ping_pong(width, height, str_id, crop_id, step_x = 0.2, step_y = 0.1)
+      layout_size = get_layout_size
+      modify_crop_resizing_from_stream(str_id, crop_id, width, height, 0, 0, 10, 0)
+      lw = layout_size[:width]
+      lh = layout_size[:height]
+      x = rand(lw - width)
+      y = rand(lh - height)
+      vx = (step_x*lw).floor
+      vy = (step_y*lh).floor
+      200.times do |d|
+        x += vx
+        y += vy
+
+        if x + width > lw
+          x = lw - width
+          vx = -vx
+        elsif x < 0
+          x = 0
+          vx = -vx
+        end
+
+        if y + height > lh
+          y = lh - height
+          vy = -vy
+        elsif y < 0
+          y = 0
+          vy = -vy
+        end
+
+        modify_crop_resizing_from_stream(str_id, crop_id, width, height, x, y, 10, d*100)
+      end
+    end
+
     def set_grid(id)
       layout_size = get_layout_size
       grid = case id
