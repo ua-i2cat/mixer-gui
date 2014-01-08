@@ -283,7 +283,6 @@ module RMixer
       return request if @testing == :request
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      puts request
       response = s.recv(2048) # TODO: max_len ?
       s.close
       return JSON.parse(response, :symbolize_names => true)
@@ -298,7 +297,6 @@ module RMixer
       return request if @testing == :request
       s = TCPSocket.open(@host, @port)
       s.print(request.to_json)
-      puts request
       s.close
       response = {:error => nil}
       return response
