@@ -107,7 +107,7 @@ module RMixer
       send_and_wait("modify_crop_from_source", params)
     end
 
-    def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1, delay = 0)
+    def modify_crop_resizing_from_stream(stream_id, crop_id, width, height, x, y, layer = 1, opacity = 1.0, delay = 0)
       params = {
         :stream_id => stream_id.to_i,
         :crop_id => crop_id.to_i,
@@ -115,7 +115,8 @@ module RMixer
         :height => height.to_i,
         :x => x.to_i,
         :y => y.to_i,
-        :layer => layer.to_i
+        :layer => layer.to_i,
+        :opacity => opacity
       }
 
       if (delay != 0)
@@ -205,11 +206,11 @@ module RMixer
     end
 
     def stop
-      send_and_wait("stop_mixer")
+      send_and_wait("stop")
     end
 
     def exit
-      send_and_wait("exit_mixer")
+      send_and_wait("exit")
     end
 
     def get_input_streams

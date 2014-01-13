@@ -90,14 +90,14 @@ module RMixer
       it.times do |d|
         width += delta_w
         height += delta_h
-        modify_crop_resizing_from_stream(str_id, crop_id, width, height, crop[:dst_x], crop[:dst_y], 10, d*100)
+        modify_crop_resizing_from_stream(str_id, crop_id, width, height, crop[:dst_x], crop[:dst_y], 10, 1.0, d*100)
       end
 
     end
 
     def ping_pong(width, height, str_id, crop_id, step_x = 0.2, step_y = 0.1)
       layout_size = get_layout_size
-      modify_crop_resizing_from_stream(str_id, crop_id, width, height, 0, 0, 10, 0)
+      modify_crop_resizing_from_stream(str_id, crop_id, width, height, 0, 0, 10, 1.0, 0)
       lw = layout_size[:width]
       lh = layout_size[:height]
       x = rand(lw - width)
@@ -124,7 +124,7 @@ module RMixer
           vy = -vy
         end
 
-        modify_crop_resizing_from_stream(str_id, crop_id, width, height, x, y, 10, d*100)
+        modify_crop_resizing_from_stream(str_id, crop_id, width, height, x, y, 10, 1.0, d*100)
       end
     end
 
@@ -168,7 +168,8 @@ module RMixer
             (g[:height]*layout_size[:height]).floor,
             (g[:x]*layout_size[:width]).floor, 
             (g[:y]*layout_size[:height]).floor,
-            g[:layer]
+            g[:layer],
+            c[:opacity]
           )
           #enable_crop_from_stream(c[:str_id], c[:id])
         end

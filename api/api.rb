@@ -204,7 +204,8 @@ class MixerAPI < Sinatra::Base
                 params[:dst_h].to_i,
                 params[:dst_x].to_i,
                 params[:dst_y].to_i,
-                params[:layer].to_i
+                params[:layer].to_i,
+                params[:opacity].to_f
               )
     end
     redirect '/app'

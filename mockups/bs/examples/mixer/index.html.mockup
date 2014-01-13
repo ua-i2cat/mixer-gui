@@ -147,6 +147,18 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Apply</button>
                               </div>
                             </div>
+                            <div class = "row">&nbsp;</div>
+                            <div class = "row">
+                              <div class="col-md-4">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-addon">Opacity</span>
+                                  <input class="form-control input-sm" name="opacity" id="opacity1" value=1>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <input type="range" id="opacity" min="0" max="1" value="1" step="0.1" onchange="showValue1(this.value)"/>
+                              </div>
+                            </div>
                           </div>
                         </form>
                       </div>
@@ -214,6 +226,18 @@
                           </div>
                           <div class="col-md-2">
                             <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                          </div>
+                        </div>
+                        <div class = "row">&nbsp;</div>
+                        <div class = "row">
+                          <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                              <span class="input-group-addon">Opacity</span>
+                              <input class="form-control input-sm" name="opacity" id="opacity" value=1>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="range" min="0" max="1" value="1" step="0.1" onchange="showValue2(this.value)"/>
                           </div>
                         </div>
                       </form>
@@ -729,5 +753,11 @@
     <script src="../../assets/js/jquery.js"></script>
     <script src="../../dist/js/bootstrap.min.js"></script>
     <script src="../../assets/js/holder.js"></script>
+    <script type="text/javascript">
+    function showValue1(newValue)
+    {
+      document.getElementById("opacity1").value=newValue;
+    }
+    </script>
   </body>
 </html>
